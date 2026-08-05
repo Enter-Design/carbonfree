@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   CarbonFree theme tokens.
+
+   Every colour is backed by a CSS custom property rather than a literal, so
+   the scroll-driven sunrise (src/scripts/daynight.ts) can retint the entire
+   site at runtime by writing to :root. Utilities like `bg-surface`, `text-ink`
+   and `border-hairline` stay live through that animation.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Surfaces */
+  --color-surface: var(--cf-surface);
+  --color-surface-alt: var(--cf-surface-alt);
+  --color-panel: var(--cf-panel);
+
+  /* Foreground */
+  --color-ink: var(--cf-ink);
+  --color-ink-muted: var(--cf-ink-muted);
+
+  /* Accent — solar yellow at night, signal green by day */
+  --color-solar: var(--cf-solar);
+  --color-solar-deep: var(--cf-solar-deep);
+  --color-signal: var(--cf-signal);
+
+  /* Lines */
+  --color-hairline: var(--cf-hairline);
+  --color-hairline-soft: var(--cf-hairline-soft);
+
+  /* Image veils — track the palette so photo sections stay legible either way */
+  --color-veil-heavy: var(--cf-veil-heavy);
+  --color-veil-mid: var(--cf-veil-mid);
+  --color-veil-light: var(--cf-veil-light);
+  --color-veil-panel: var(--cf-veil-panel);
+  --color-veil-field: var(--cf-veil-field);
+
+  /* Type */
+  --font-sans: aktiv-grotesk, "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-din: din-2014, "Helvetica Neue", Arial, sans-serif;
+  --font-din-narrow: din-2014-narrow, "Helvetica Neue", Arial, sans-serif;
+
+  /* Layout */
+  --spacing-site: 1280px;
+  --container-site: 1280px;
+
+  /* Fluid type used by heroes and section headings */
+  --text-display: clamp(40px, 5.6vw, 76px);
+  --text-display--line-height: 1.06;
+  --text-headline: clamp(32px, 4vw, 52px);
+  --text-headline--line-height: 1.08;
+  --text-subhead: clamp(21px, 2.2vw, 29px);
+  --text-lede: clamp(17px, 1.6vw, 21px);
+  --text-stat: clamp(30px, 3.4vw, 46px);
+}
+
+/* --- Night palette. The sunrise lerps these toward the day values. --- */
+:root {
+  --cf-surface: #070809;
+  --cf-surface-alt: #0c0e10;
+  --cf-panel: #0e1113;
+  --cf-ink: #eef2f5;
+  --cf-ink-muted: #94a0aa;
+  --cf-solar: #ffb524;
+  --cf-solar-deep: #ff8a00;
+  --cf-signal: #ffb524;
+  --cf-hairline: rgb(255 255 255 / 0.1);
+  --cf-hairline-soft: rgb(255 255 255 / 0.05);
+  --cf-nav: rgb(7 8 9 / 0.86);
+  --cf-veil-heavy: rgb(7 8 9 / 0.94);
+  --cf-veil-mid: rgb(7 8 9 / 0.72);
+  --cf-veil-light: rgb(7 8 9 / 0.25);
+  --cf-veil-panel: rgb(7 8 9 / 0.55);
+  --cf-veil-field: rgb(255 255 255 / 0.03);
+
+  /* Full-bleed gutter that keeps split sections aligned to the 1280 grid */
+  --cf-edge: max(clamp(32px, 6vw, 90px), calc(50vw - 640px + 32px));
+}
+
+/* Pages that opt out of the sunrise (news, legal) lock to daylight. */
+[data-palette="day"] {
+  --cf-surface: #ffffff;
+  --cf-surface-alt: #f4f6f9;
+  --cf-panel: #ffffff;
+  --cf-ink: #10171d;
+  --cf-ink-muted: #5a6b78;
+  --cf-solar: #1fd286;
+  --cf-solar-deep: #12a86c;
+  --cf-signal: #1fd286;
+  --cf-hairline: rgb(12 22 30 / 0.13);
+  --cf-hairline-soft: rgb(12 22 30 / 0.07);
+  --cf-nav: rgb(255 255 255 / 0.82);
+  --cf-veil-heavy: rgb(255 255 255 / 0.94);
+  --cf-veil-mid: rgb(255 255 255 / 0.72);
+  --cf-veil-light: rgb(255 255 255 / 0.25);
+  --cf-veil-panel: rgb(244 246 249 / 0.88);
+  --cf-veil-field: rgb(12 22 30 / 0.045);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: transparent;
+    color: var(--cf-ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  a { color: inherit; text-decoration: none; }
+  *, ::after, ::before { border-color: var(--cf-hairline); }
+}
+
+/* ---------------------------------------------------------------------------
+   Components — reserved for the handful of things utilities genuinely can't
+   express: the fixed sky layer, the grid guides, generated rails, and
+   gradient-clipped text. Everything else is utility classes in the markup.
+--------------------------------------------------------------------------- */
+@layer components {
+  /* Fixed sky. Repainted per frame during the sunrise. */
+  .cf-sky {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: #070809;
+  }
+
+  /* Vertical 12-column guides behind everything */
+  .cf-guides {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .cf-guides > div {
+    width: 100%;
+    max-width: calc(1280px - 64px);
+    margin: 0 32px;
+    border-inline: 1px solid var(--cf-hairline-soft);
+    background-image: linear-gradient(to right, var(--cf-hairline-soft) 1px, transparent 1px);
+    background-size: 8.3333% 100%;
+  }
+
+  /* Horizontal rails generated at every [data-rail] boundary */
+  .cf-rails {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .cf-rails > div {
+    position: relative;
+    width: 100%;
+    max-width: calc(1280px - 64px);
+    margin: 0 32px;
+  }
+  .cf-rail {
+    position: absolute;
+    inset-inline: 0;
+    border-top: 1px solid var(--cf-hairline-soft);
+  }
+
+  /* Gradient-clipped text — background-clip has no utility equivalent */
+  .cf-gradient-text {
+    background: linear-gradient(120deg, var(--cf-solar), var(--cf-solar-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .cf-gradient-text-dual {
+    background: linear-gradient(120deg, var(--cf-solar), var(--cf-signal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Reveal on scroll */
+  .cf-reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+                transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .cf-reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cf-reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* Diamond marker */
+  .cf-mark {
+    flex: 0 0 auto;
+    width: 9px;
+    height: 9px;
+    background: var(--cf-signal);
+    transform: rotate(45deg);
+  }
+}
+
+@utility nav-surface {
+  background: var(--cf-nav);
+}
+@utility edge-gutter-l {
+  padding-left: var(--cf-edge);
+}
+@utility edge-gutter-r {
+  padding-right: var(--cf-edge);
+}

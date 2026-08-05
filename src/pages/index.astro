@@ -1,17 +1,150 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import HeroCard from '../components/HeroCard.astro';
+import Doors from '../components/Doors.astro';
+import StatBar from '../components/StatBar.astro';
+import SectionHead from '../components/SectionHead.astro';
+import NumberedGrid from '../components/NumberedGrid.astro';
+import RegionChips from '../components/RegionChips.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import PartnerStrip from '../components/PartnerStrip.astro';
+import NewsGrid from '../components/NewsGrid.astro';
+import Split from '../components/Split.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Button from '../components/Button.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import { services, regions } from '../data/home';
+import { facts } from '../data/site';
 
+const trust = [
+  { strong: '100%', tail: 'Canadian-owned' },
+  { strong: facts.projects, tail: 'projects delivered' },
+  { lead: 'Partnered with', strong: 'three First Nations', tail: 'on our 2026 awards' },
+  { lead: 'Founded in', strong: 'Toronto', tail: 'in 2006' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="CarbonFree Technology — Utility-scale solar development"
+  description="CarbonFree develops, finances, builds and operates utility-scale solar across the Americas. 137 projects and 780 MWdc delivered since 2006."
+  pivot="#daylight"
+>
+  <Hero
+    eyebrow="Utility-scale solar in Ontario since 2006"
+    image="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=2000&q=80"
+    imageAlt="Utility-scale solar farm at dawn"
+    trust={trust}
+  >
+    <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
+      We build solar at scale to <span class="cf-gradient-text-dual">power Ontario&rsquo;s clean energy future.</span>
+    </h1>
+
+    <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted">
+      CarbonFree develops, finances, builds and operates utility-scale solar across the Americas
+      &mdash; {facts.projects} projects and 780&nbsp;MW<sub>dc</sub> delivered since 2006. That takes
+      two partners: landowners whose ground can host a project, and large electricity users who buy
+      the power at a fixed price and take the clean energy credits.
+    </p>
+
+    <div slot="actions" class="cf-reveal flex flex-wrap items-center gap-5.5">
+      <Button href="#door-land">I have land to lease &rarr;</Button>
+      <Button href="#door-power" variant="ghost">I have power costs to hedge &rarr;</Button>
+    </div>
+
+    <HeroCard slot="aside" flag="Latest news">
+      <div class="mb-2.5 font-din text-[12.5px] tracking-[0.05em] text-ink-muted uppercase">April 2026 &middot; Ontario</div>
+      <h2 class="mb-3 text-xl leading-tight font-bold">
+        CarbonFree &amp; Fengate awarded three solar contracts totalling
+        <span class="cf-gradient-text-dual">381&nbsp;MW</span> in the IESO LT2 procurement.
+      </h2>
+      <p class="mb-4 text-[14.5px] text-ink-muted">
+        The largest total contract capacity awarded to a single proponent in the round &mdash;
+        advanced in partnership with three First Nations communities.
+      </p>
+      <ArrowLink href="/news/ieso-lt2-award">Read the announcement</ArrowLink>
+      <div class="my-4 h-px bg-hairline"></div>
+      <div class="flex items-start gap-3">
+        <span class="mt-1.5 size-2 shrink-0 rotate-45 bg-solar"></span>
+        <p class="text-[13.5px] text-ink-muted">
+          <b class="text-ink">Fort Frances 167&nbsp;MW</b>, <b class="text-ink">Kynoch 154&nbsp;MW</b>
+          &amp; <b class="text-ink">Rainy River 60&nbsp;MW</b> now advancing toward construction.
+        </p>
+      </div>
+    </HeroCard>
+  </Hero>
+
+  <Doors />
+  <StatBar />
+
+  <!-- Daylight begins here -->
+  <section id="daylight" class="py-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="What we do"
+        title="One team, every stage, from first parcel to the grid."
+        body="CarbonFree originates, permits, finances, constructs and then operates its projects in-house, for their full multi-decade life. The hardest parts of a project tend to be the handoffs &mdash; so we don&rsquo;t have any. That end-to-end control is what turns a CarbonFree lease into a real project, and a CarbonFree contract into real power."
+      />
+      <NumberedGrid items={services} />
+      <RegionChips items={regions} />
+    </div>
+  </section>
+
+  <section id="projects" class="pb-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="Our projects"
+        title={`${facts.projects} projects. Three countries. All the way to commercial operation.`}
+        body={`State-of-the-art rooftop, canopy and ground-mounted systems spanning a wide range of geographies, climates and regulatory jurisdictions &mdash; ${facts.ontarioProjects} in Ontario alone.`}
+      />
+      <ProjectGrid />
+      <div class="cf-reveal mt-10"><ArrowLink href="/projects">See the full project portfolio</ArrowLink></div>
+    </div>
+  </section>
+
+  <section id="partners" class="pb-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="Partnerships"
+        title="Meaningful partnerships, foundational to how we build."
+        body="&ldquo;Meaningful partnerships are foundational to how we develop projects.&rdquo; &mdash; Daniel Soper, CEO, CarbonFree."
+      />
+      <PartnerStrip />
+    </div>
+  </section>
+
+  <section id="finance">
+    <Split
+      image="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1400&q=80"
+      imageAlt="Solar array across open land"
+      badgeValue={facts.capital}
+      badgeLabel={`project capital raised across<br>${facts.financings} financings since 2006`}
+    >
+      <Eyebrow>Our capital record</Eyebrow>
+      <h2 class="mt-4.5 mb-5.5 text-headline font-bold">Financed, built and profitably exited &mdash; nine times over.</h2>
+      <p class="mb-4.5 text-[17px] text-ink-muted">
+        CarbonFree has raised and deployed more than US$400 million of project equity and over
+        US$2.0 billion of project debt, monetizing {facts.ontarioProjects} Ontario projects and {facts.projects} globally.
+      </p>
+      <ul class="mt-5.5 grid gap-4">
+        <li class="flex items-start gap-3.5 text-base"><span class="cf-mark mt-1.75"></span><span><b>Near-term value crystallized.</b> Three IESO contracts pre-sold to a project sponsor with a defined development-fee structure.</span></li>
+        <li class="flex items-start gap-3.5 text-base"><span class="cf-mark mt-1.75"></span><span><b>Backed by Fengate Asset Management</b>, a long-standing investor in Canadian energy infrastructure.</span></li>
+        <li class="flex items-start gap-3.5 text-base"><span class="cf-mark mt-1.75"></span><span><b>Deep pipeline.</b> Solar VI &amp; VII portfolios, BC Hydro procurement, and LATAM storage under development.</span></li>
+      </ul>
+      <div class="mt-6.5"><ArrowLink href="#projects">See our track record</ArrowLink></div>
+    </Split>
+  </section>
+
+  <section id="news" class="py-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead eyebrow="News &amp; announcements" title="The latest from CarbonFree." />
+      <NewsGrid />
+    </div>
+  </section>
+
+  <ContactCTA
+    title="Let&rsquo;s build the next chapter of the energy transition."
+    body="Whether you&rsquo;re a landowner, energy user, community, or capital partner — we&rsquo;d like to hear from you."
+  />
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+interface Props {
+  href: string;
+  variant?: 'solar' | 'ghost';
+  class?: string;
+}
+const { href, variant = 'solar', class: className = '' } = Astro.props;
+
+const base = 'inline-flex items-center gap-2.5 border px-[30px] py-[15px] text-[15px] font-bold transition duration-200';
+const styles = {
+  solar: 'border-transparent bg-linear-[135deg,var(--cf-solar),var(--cf-solar-deep)] text-[#1a1205] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgb(255_138_0/0.32)]',
+  ghost: 'border-hairline bg-white/[0.02] text-ink hover:border-solar hover:text-solar',
+};
+---
+<a href={href} class:list={[base, styles[variant], className]}><slot /></a>

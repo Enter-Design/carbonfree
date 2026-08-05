@@ -1,0 +1,78 @@
+---
+import Logo from './Logo.astro';
+import { site, facts } from '../data/site';
+
+const columns = [
+  { title: 'Work with us', links: [
+    { label: 'Lease Your Land', href: '/landowners' },
+    { label: 'Buy Clean Power', href: '/clean-power' },
+    { label: 'Track Record', href: '/#projects' },
+    { label: 'News', href: '/#news' },
+  ]},
+  { title: 'Company', links: [
+    { label: 'About', href: '/about' },
+    { label: 'Leadership', href: '/about#leadership' },
+    { label: 'Partnerships', href: '/#partners' },
+  ]},
+  { title: 'Connect', links: [
+    { label: 'Get in Touch', href: '/#contact' },
+    { label: 'Media Inquiries', href: '/#contact' },
+  ]},
+];
+
+const miniStats = [
+  { value: facts.founded, label: 'Founded in Toronto' },
+  { value: facts.commissioned, label: 'MW commissioned' },
+  { value: facts.pipeline, label: 'In development' },
+];
+---
+<footer data-rail class="relative z-1 border-t border-hairline bg-surface-alt pt-18 pb-9">
+  <div class="mx-auto w-full max-w-site px-8">
+    <div class="mb-12 grid gap-14 border-b border-hairline pb-13 lg:grid-cols-[1.4fr_1fr]">
+      <div>
+        <h2 class="mb-3.5 text-xl font-bold">A recognized solar industry leader since {facts.founded}</h2>
+        <p class="mb-3.5 max-w-[46ch] text-[15.5px] text-ink-muted">
+          {site.name} Inc. is a 100% Canadian-owned, Toronto-based developer of utility-scale solar
+          and energy storage across North America and Chile.
+        </p>
+        <p class="max-w-[46ch] text-[15.5px] text-ink-muted">
+          With {facts.projects} projects delivered globally and a pipeline of more than 1 GW under
+          development, we’re committed to Indigenous partnership, community benefit and the energy transition.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-10">
+        {miniStats.map((s) => (
+          <div>
+            <div class="font-din-narrow text-[32px] font-bold text-solar">{s.value}</div>
+            <div class="text-sm text-ink-muted">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mb-13 grid gap-10 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+      <div>
+        <Logo class="h-6.5 w-auto" />
+        <p class="mt-4 max-w-[34ch] text-[15px] text-ink-muted">
+          Development, financing, construction management and operation of solar and storage
+          projects across the Americas.
+        </p>
+      </div>
+      {columns.map((col) => (
+        <div>
+          <h3 class="mb-4 font-din text-[13px] font-bold tracking-[0.14em] text-ink-muted uppercase">{col.title}</h3>
+          {col.links.map((l) => (
+            <a href={l.href} class="mb-2.5 block text-[15px] text-ink opacity-85 transition duration-200 hover:text-solar hover:opacity-100">
+              {l.label}
+            </a>
+          ))}
+        </div>
+      ))}
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-6.5 text-sm text-ink-muted">
+      <span>&copy; {new Date().getFullYear()} {site.name} Inc. 100% Canadian-owned. All rights reserved.</span>
+      <span>{site.address}</span>
+    </div>
+  </div>
+</footer>

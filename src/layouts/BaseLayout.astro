@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** 'sunrise' runs the scroll-triggered night→day retint. 'day' locks to daylight. */
+  palette?: 'sunrise' | 'day';
+  /** Selector for the first daylight section. Only used when palette is 'sunrise'. */
+  pivot?: string;
+}
+
+const {
+  title,
+  description = 'CarbonFree develops, finances, builds and operates utility-scale solar across the Americas.',
+  palette = 'sunrise',
+  pivot = '#daylight',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-palette={palette === 'day' ? 'day' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="https://use.typekit.net/ymv7jjc.css" />
+  </head>
+
+  <body class="relative overflow-x-hidden font-sans antialiased">
+    <div class="cf-sky" aria-hidden="true"></div>
+    <div class="cf-guides" aria-hidden="true"><div></div></div>
+    <div class="cf-rails" aria-hidden="true"><div></div></div>
+
+    <Header />
+    <main class="relative z-1"><slot /></main>
+    <Footer />
+
+    <script>
+      import { initReveal, initRails } from '../scripts/reveal';
+      initReveal();
+      initRails();
+    </script>
+
+    {palette !== 'day' && (
+      <script define:vars={{ pivot }}>
+        import('../scripts/daynight').then(({ initSunrise }) => initSunrise({ pivot }));
+      </script>
+    )}
+  </body>
+</html>

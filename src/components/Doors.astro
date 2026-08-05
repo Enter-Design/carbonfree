@@ -1,0 +1,53 @@
+---
+import Eyebrow from './Eyebrow.astro';
+import Button from './Button.astro';
+import ArrowLink from './ArrowLink.astro';
+import { doors } from '../data/home';
+---
+<section id="doors" data-rail class="border-t border-hairline">
+  <div class="mx-auto w-full max-w-site px-8">
+    <div class="cf-reveal pt-14 pb-6.5">
+      <Eyebrow>Where do you fit?</Eyebrow>
+      <h2 class="mt-3.5 text-[clamp(24px,2.4vw,32px)] font-bold">Two ways to work with us.</h2>
+    </div>
+
+    <div data-rail class="grid border-y border-hairline md:grid-cols-2">
+      {doors.map((door, i) => (
+        <div
+          id={door.id}
+          class:list={[
+            'cf-reveal group relative flex flex-col bg-white/[0.018] px-0 py-11 transition duration-300 hover:bg-white/[0.045]',
+            'md:px-8 lg:px-13',
+            i === 0 ? 'md:pl-0' : 'md:border-l md:border-hairline md:pr-0 max-md:border-t max-md:border-hairline',
+          ]}
+        >
+          <span class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100"></span>
+
+          <Eyebrow>{door.eyebrow}</Eyebrow>
+          <h3 class="mt-3.5 mb-4 max-w-[17ch] text-[clamp(25px,2.5vw,34px)] leading-[1.1] font-bold">
+            {door.title}
+          </h3>
+          <p class="mb-7.5 max-w-[46ch] grow text-[16.5px] text-ink-muted">{door.body}</p>
+
+          <div class="mb-5.5">
+            <Button href={door.cta.href}>{door.cta.label} &rarr;</Button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 font-din text-[13px] text-ink-muted">
+            {door.trust.map((t, n) => (
+              <>
+                {n > 0 && <span class="text-hairline" aria-hidden="true">&bull;</span>}
+                <span>{t}</span>
+              </>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="cf-reveal flex flex-wrap items-center gap-2.5 pt-6.5 pb-14 text-[15px] text-ink-muted">
+      <span>Investor, First Nations community, or media?</span>
+      <ArrowLink href="/#contact">Start here</ArrowLink>
+    </div>
+  </div>
+</section>

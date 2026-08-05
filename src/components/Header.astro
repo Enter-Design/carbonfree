@@ -1,0 +1,60 @@
+---
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { nav } from '../data/site';
+---
+<header
+  data-header
+  class="fixed inset-x-0 top-0 z-50 transition duration-300 [&.is-scrolled]:nav-surface [&.is-scrolled]:border-b [&.is-scrolled]:border-hairline [&.is-scrolled]:backdrop-blur-[14px]"
+>
+  <div class="mx-auto w-full max-w-none px-8">
+    <nav class="flex h-[78px] items-center justify-between">
+      <a href="/" aria-label="CarbonFree home"><Logo /></a>
+
+      <div class="hidden gap-9 text-[15px] font-medium md:flex">
+        {nav.map((item) =>
+          'children' in item && item.children ? (
+            <span class="group relative inline-flex items-center">
+              <a href={item.href} class="inline-flex items-center gap-1.5 text-ink transition duration-200">
+                {item.label}
+                <span class="text-[10px] opacity-70 transition group-hover:opacity-100" aria-hidden="true">&#9662;</span>
+              </a>
+              <span class="invisible absolute top-full -left-[18px] min-w-[190px] -translate-y-1.5 pt-[18px] opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                {item.children.map((child, i) => (
+                  <a
+                    href={child.href}
+                    class:list={[
+                      'block border border-b-0 border-hairline nav-surface px-5 py-3.5 text-[15px] text-ink backdrop-blur-[14px] transition duration-200 hover:bg-solar/[0.06] hover:text-solar',
+                      i === item.children.length - 1 && 'border-b',
+                    ]}
+                  >
+                    {child.label}
+                  </a>
+                ))}
+              </span>
+            </span>
+          ) : (
+            <a
+              href={item.href}
+              class:list={[
+                'transition duration-200 hover:text-ink',
+                item.emphasis ? 'text-ink' : 'text-ink-muted',
+              ]}
+            >
+              {item.label}
+            </a>
+          ),
+        )}
+      </div>
+
+      <div class="flex items-center gap-4.5">
+        <Button href="/#contact" class="hidden sm:inline-flex">Contact</Button>
+        <button type="button" class="text-ink md:hidden" aria-label="Menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+---
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<div class="cf-reveal relative mt-9 border border-hairline bg-signal/[0.05] px-6.5 py-8.5 lg:px-11.5">
+  <span class="absolute inset-y-0 left-0 w-[3px] bg-linear-to-b from-signal to-solar"></span>
+  <h3 class="mb-2.5 text-xl font-bold text-signal">{title}</h3>
+  <p class="text-[15.5px] text-ink-muted"><slot /></p>
+</div>
