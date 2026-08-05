@@ -1,0 +1,22 @@
+---
+interface Step { n: string; title: string; body: string }
+interface Props { items: readonly Step[] }
+const { items } = Astro.props;
+---
+<div data-rail class="grid border-y border-hairline sm:grid-cols-2 lg:grid-cols-4">
+  {items.map((s, i) => (
+    <div
+      class:list={[
+        'cf-reveal relative border-hairline cell-inset py-10.5',
+        i > 0 && 'lg:border-l',
+        i % 2 === 1 && 'sm:max-lg:border-l',
+        i > 1 && 'sm:max-lg:border-t',
+        'max-sm:border-t first:max-sm:border-t-0',
+      ]}
+    >
+      <div class="mb-4.5 font-din text-sm font-bold tracking-[0.14em] text-solar uppercase">{s.n}</div>
+      <h3 class="mb-2.5 text-[19px] font-bold">{s.title}</h3>
+      <p class="text-[15px] text-ink-muted" set:html={s.body} />
+    </div>
+  ))}
+</div>

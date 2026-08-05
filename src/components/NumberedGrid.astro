@@ -7,10 +7,9 @@ const { items } = Astro.props;
   {items.map((item, i) => (
     <div
       class:list={[
-        'cf-reveal group relative overflow-hidden border-hairline bg-white/[0.02] px-0 py-10 transition duration-300 sm:px-7.5',
+        'cf-reveal group relative overflow-hidden border-hairline bg-white/[0.02] cell-inset py-10 transition duration-300',
         i > 0 && 'lg:border-l',
-        i % 2 === 1 && 'sm:max-lg:border-l sm:max-lg:pr-0',
-        i % 2 === 0 && 'sm:max-lg:pl-0',
+        i % 2 === 1 && 'sm:max-lg:border-l',
         i > 1 && 'sm:max-lg:border-t',
         'max-sm:border-t first:max-sm:border-t-0',
       ]}

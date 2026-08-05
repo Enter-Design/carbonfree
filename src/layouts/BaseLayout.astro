@@ -10,6 +10,12 @@ interface Props {
   palette?: 'sunrise' | 'day';
   /** Selector for the first daylight section. Only used when palette is 'sunrise'. */
   pivot?: string;
+  /**
+   * Fires when the pivot is this fraction of a viewport from the top.
+   * Higher = earlier. 0.8 fires after roughly a quarter of a full-screen hero
+   * has scrolled away; 0.55 waits until it is half gone.
+   */
+  triggerAt?: number;
 }
 
 const {
@@ -17,6 +23,7 @@ const {
   description = 'CarbonFree develops, finances, builds and operates utility-scale solar across the Americas.',
   palette = 'sunrise',
   pivot = '#daylight',
+  triggerAt = 0.55,
 } = Astro.props;
 ---
 
@@ -32,7 +39,12 @@ const {
     <link rel="stylesheet" href="https://use.typekit.net/ymv7jjc.css" />
   </head>
 
-  <body class="relative overflow-x-hidden font-sans antialiased">
+  <body
+    class="relative overflow-x-hidden font-sans antialiased"
+    data-pivot={pivot}
+    data-trigger-at={String(triggerAt)}
+    data-sunrise={palette === 'day' ? 'off' : 'on'}
+  >
     <div class="cf-sky" aria-hidden="true"></div>
     <div class="cf-guides" aria-hidden="true"><div></div></div>
     <div class="cf-rails" aria-hidden="true"><div></div></div>
@@ -41,16 +53,25 @@ const {
     <main class="relative z-1"><slot /></main>
     <Footer />
 
+    <!--
+      One bundled module script. Config is read from data attributes on <body>
+      rather than passed with define:vars — define:vars implicitly marks a script
+      is:inline, and inline scripts are not processed by Astro, so the relative
+      import path would ship to the browser unresolved.
+    -->
     <script>
       import { initReveal, initRails } from '../scripts/reveal';
+      import { initSunrise } from '../scripts/daynight';
+
       initReveal();
       initRails();
-    </script>
 
-    {palette !== 'day' && (
-      <script define:vars={{ pivot }}>
-        import('../scripts/daynight').then(({ initSunrise }) => initSunrise({ pivot }));
-      </script>
-    )}
+      if (document.body.dataset.sunrise === 'on') {
+        initSunrise({
+          pivot: document.body.dataset.pivot || '#daylight',
+          triggerAt: Number(document.body.dataset.triggerAt ?? 0.55),
+        });
+      }
+    </script>
   </body>
 </html>

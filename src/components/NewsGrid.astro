@@ -1,20 +1,10 @@
 ---
-import ArrowLink from './ArrowLink.astro';
-import { news } from '../data/home';
+import NewsCard from './NewsCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { posts: CollectionEntry<'news'>[] }
+const { posts } = Astro.props;
 ---
 <div data-rail class="cf-reveal grid border-y border-hairline lg:grid-cols-3">
-  {news.map((n, i) => (
-    <article
-      class:list={[
-        'relative px-0 py-9 transition duration-300 hover:bg-white/[0.02] lg:px-7.5',
-        i > 0 && 'lg:border-l lg:border-hairline max-lg:border-t max-lg:border-hairline',
-        i === 0 && 'lg:pl-0',
-      ]}
-    >
-      <div class="mb-3.5 font-din text-[12.5px] tracking-[0.08em] text-solar uppercase">{n.date}</div>
-      <h3 class="mb-3 text-lg leading-tight font-bold">{n.title}</h3>
-      <p class="mb-4 text-[14.5px] text-ink-muted">{n.body}</p>
-      <ArrowLink href={n.href}>Read more</ArrowLink>
-    </article>
-  ))}
+  {posts.map((post, i) => <NewsCard post={post} first={i === 0} />)}
 </div>

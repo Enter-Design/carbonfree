@@ -8,7 +8,7 @@ interface Props {
 import Eyebrow from './Eyebrow.astro';
 const { eyebrow, title, body, class: className = '' } = Astro.props;
 ---
-<div class:list={['cf-reveal mb-14 max-w-[760px] pl-6.5', className]}>
+<div class:list={['cf-reveal mb-14 max-w-[760px] pl-(--cf-inset)', className]}>
   <Eyebrow>{eyebrow}</Eyebrow>
   <h2 class="mt-4.5 text-headline font-bold" set:html={title} />
   {body && <p class="mt-4.5 text-lg text-ink-muted" set:html={body} />}

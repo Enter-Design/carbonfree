@@ -1,0 +1,23 @@
+---
+interface Row { label: string; a: string; b: string }
+interface Props {
+  headA: string;
+  headB: string;
+  rows: readonly Row[];
+}
+const { headA, headB, rows } = Astro.props;
+---
+<div class="cf-reveal mt-2.5 overflow-hidden border border-hairline">
+  <div class="grid grid-cols-[1.2fr_1fr_1fr] bg-surface-alt">
+    <div class="border-hairline cell-inset py-5.5 font-din text-sm font-bold tracking-[0.04em] text-ink uppercase">&nbsp;</div>
+    <div class="border-l border-hairline cell-inset py-5.5 font-din text-sm font-bold tracking-[0.04em] text-ink uppercase">{headA}</div>
+    <div class="border-l border-hairline cell-inset py-5.5 font-din text-sm font-bold tracking-[0.04em] text-solar uppercase">{headB}</div>
+  </div>
+  {rows.map((r) => (
+    <div class="grid grid-cols-[1.2fr_1fr_1fr] border-t border-hairline">
+      <div class="cell-inset py-5.5 text-[15.5px] font-semibold text-ink">{r.label}</div>
+      <div class="border-l border-hairline cell-inset py-5.5 text-[15.5px] text-ink-muted" set:html={r.a} />
+      <div class="border-l border-hairline cell-inset py-5.5 text-[15.5px] font-bold text-signal" set:html={r.b} />
+    </div>
+  ))}
+</div>

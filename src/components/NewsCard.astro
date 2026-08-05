@@ -1,0 +1,28 @@
+---
+import ArrowLink from './ArrowLink.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'news'>;
+  first?: boolean;
+}
+const { post, first = false } = Astro.props;
+const { title, dek, date, dateLabel, category } = post.data;
+const stamp = dateLabel ?? date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long' });
+---
+<article
+  class:list={[
+    'relative cell-inset py-9 transition duration-300 hover:bg-white/[0.02]',
+    !first && 'lg:border-l lg:border-hairline max-lg:border-t max-lg:border-hairline',
+  ]}
+>
+  <div class="mb-3.5 flex flex-wrap items-center gap-x-3 font-din text-[12.5px] tracking-[0.08em] uppercase">
+    <span class="text-solar">{stamp}</span>
+    <span class="text-ink-muted">{category}</span>
+  </div>
+  <h3 class="mb-3 text-lg leading-tight font-bold">
+    <a href={`/news/${post.id}`} class="transition duration-200 hover:text-solar">{title}</a>
+  </h3>
+  <p class="mb-4 text-[14.5px] text-ink-muted">{dek}</p>
+  <ArrowLink href={`/news/${post.id}`}>Read more</ArrowLink>
+</article>

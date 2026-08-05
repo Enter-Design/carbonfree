@@ -1,0 +1,26 @@
+---
+interface Item { value: string; label: string }
+interface Props { items: readonly Item[] }
+const { items } = Astro.props;
+---
+<div data-rail class="border-b border-hairline bg-surface-alt">
+  <div class="mx-auto w-full max-w-site px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4">
+      {items.map((item, i) => (
+        <div
+          class:list={[
+            'cf-reveal border-hairline cell-inset py-11',
+            i > 0 && 'lg:border-l',
+            i % 2 === 1 && 'sm:max-lg:border-l',
+            i > 1 && 'sm:max-lg:border-t',
+            'max-sm:border-t first:max-sm:border-t-0',
+            i === items.length - 1 && 'lg:border-r',
+          ]}
+        >
+          <div class="cf-gradient-text font-din-narrow text-[clamp(24px,2.4vw,32px)] leading-tight font-bold" set:html={item.value} />
+          <div class="mt-2.5 max-w-[30ch] text-[15px] text-ink-muted">{item.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

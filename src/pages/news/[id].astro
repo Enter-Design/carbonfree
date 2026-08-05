@@ -1,0 +1,159 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import Button from '../../components/Button.astro';
+import NewsCard from '../../components/NewsCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news', ({ data }) => !data.draft);
+  const sorted = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return sorted.map((post) => ({
+    params: { id: post.id },
+    props: { post, related: sorted.filter((p) => p.id !== post.id).slice(0, 3) },
+  }));
+}
+
+const { post, related } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+const stamp = d.dateLabel ?? d.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+const isPlaceholder = (v: string) => v.trim().startsWith('[');
+
+/* The sunrise pivots on whatever section follows the hero, so the full-screen
+   hero is the only thing in night and everything readable is in daylight. */
+const daylightOn = d.awards.length > 0 ? 'awards' : 'body';
+---
+
+<BaseLayout title={`${d.title} — CarbonFree`} description={d.dek} pivot="#daylight" triggerAt={0.8}>
+  <article>
+    <!-- HERO -->
+    <section data-rail class="relative flex min-h-screen items-center overflow-hidden border-b border-hairline pt-32 pb-20">
+      <div class="absolute inset-0 z-0">
+        <img src={d.image} alt={d.imageAlt} class="size-full object-cover opacity-34" />
+        <div class="absolute inset-0 bg-[linear-gradient(90deg,var(--cf-veil-heavy)_4%,var(--cf-veil-mid)_58%,var(--cf-veil-light))]"></div>
+      </div>
+
+      <div class="relative z-2 mx-auto w-full max-w-site px-8">
+        <div class="cf-reveal flex flex-wrap items-center gap-3.5">
+          <Eyebrow>{d.kicker}</Eyebrow>
+          <span class="font-din text-[13px] text-ink-muted">
+            {isPlaceholder(stamp) ? <span class="cf-todo">{stamp}</span> : stamp}
+          </span>
+        </div>
+
+        <h1 class="cf-reveal mt-5 mb-6 max-w-[22ch] text-[clamp(32px,4.4vw,58px)] font-bold">{d.title}</h1>
+        <p class="cf-reveal max-w-[62ch] text-lede text-ink-muted">{d.dek}</p>
+
+        <div class="cf-reveal mt-9 flex flex-wrap gap-x-6.5 gap-y-2.5 border-t border-hairline pt-5.5 font-din text-[13.5px] text-ink-muted">
+          {d.meta.map((m) => (
+            <span>{m.label} <b class="font-bold text-ink">{m.value}</b></span>
+          ))}
+          {d.readingTime && <span>Read time <b class="font-bold text-ink">{d.readingTime}</b></span>}
+        </div>
+      </div>
+
+      <div class="absolute bottom-8 left-1/2 z-2 flex -translate-x-1/2 flex-col items-center gap-2 font-din text-xs tracking-[0.2em] text-ink-muted uppercase">
+        Scroll
+        <span class="h-8.5 w-px bg-linear-to-b from-solar to-transparent"></span>
+      </div>
+    </section>
+
+    <!-- AWARDED PROJECTS — daylight begins here -->
+    {d.awards.length > 0 && (
+      <section id={daylightOn === 'awards' ? 'daylight' : undefined} data-rail class="border-b border-hairline">
+        <div class="mx-auto w-full max-w-site px-8">
+          <div class="grid lg:grid-cols-3">
+            {d.awards.map((a, i) => (
+              <div
+                class:list={[
+                  'cf-reveal border-hairline cell-inset py-10',
+                  i > 0 && 'lg:border-l max-lg:border-t',
+                ]}
+              >
+                <div class="cf-gradient-text font-din-narrow text-[clamp(34px,3.6vw,48px)] font-bold tracking-[-0.02em]">{a.capacity}</div>
+                <div class="mt-0.5 font-din text-[12.5px] tracking-[0.12em] text-ink-muted uppercase">{a.unit}</div>
+                <h2 class="mt-4.5 mb-2.5 text-[19px] font-bold">{a.name}</h2>
+                <div class="mb-3.5 text-[14.5px] text-ink-muted">{a.place}</div>
+                {a.partner && (
+                  <div class="flex items-start gap-2.75 text-[14.5px] text-ink">
+                    <span class="cf-mark mt-1.5"></span><span>{a.partner}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- BODY -->
+    <section id={daylightOn === 'body' ? 'daylight' : undefined} class="py-24">
+      <div class="mx-auto w-full max-w-site px-8">
+        <div class="cf-prose cf-reveal pl-(--cf-inset)"><Content /></div>
+
+        <!-- QUOTES -->
+        {d.quotes.length > 0 && (
+          <div class="cf-reveal mt-16 pl-(--cf-inset)">
+            <Eyebrow class="mb-6">Executive quotes</Eyebrow>
+            {d.quotes.map((q, i) => (
+              <blockquote class:list={['border-t border-hairline py-11', i === d.quotes.length - 1 && 'border-b']}>
+                <p class="mb-5.5 max-w-[26ch] text-[clamp(20px,2.3vw,29px)] leading-[1.28] font-bold tracking-[-0.02em] text-ink">
+                  &ldquo;{q.lead}&rdquo;
+                </p>
+                <p class="mb-5.5 max-w-[74ch] text-[16.5px] leading-relaxed text-ink-muted">&ldquo;{q.body}&rdquo;</p>
+                <footer class="flex items-center gap-3.5">
+                  <span class="h-9.5 w-[3px] bg-linear-to-b from-solar to-solar-deep"></span>
+                  <span>
+                    <span class="block text-[15.5px] font-bold">{q.name}</span>
+                    <span class="block font-din text-[13.5px] text-ink-muted">{q.role}</span>
+                  </span>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        )}
+
+        <!-- CONTACTS -->
+        {d.contacts.length > 0 && (
+          <div class="cf-reveal mt-16">
+            <Eyebrow class="mb-6 pl-(--cf-inset)">Media contacts</Eyebrow>
+            <div data-rail class="grid border border-hairline sm:grid-cols-2">
+              {d.contacts.map((c, i) => (
+                <div class:list={['cell-inset py-7.5', i > 0 && 'sm:border-l sm:border-hairline max-sm:border-t max-sm:border-hairline']}>
+                  <div class="mb-1 text-base font-bold">
+                    {isPlaceholder(c.name) ? <span class="cf-todo">{c.name}</span> : c.name}
+                  </div>
+                  <div class="font-din text-sm text-ink-muted">{c.org}</div>
+                  <div class="mt-2.5 font-din text-sm leading-relaxed text-ink-muted">
+                    {c.address && <>{c.address}<br /></>}
+                    {c.email && <a href={`mailto:${c.email}`} class="text-solar underline underline-offset-4">{c.email}</a>}
+                    {c.note}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div class="cf-reveal mt-16 flex flex-wrap items-center justify-between gap-4.5 border-t border-hairline pl-(--cf-inset) pt-7.5">
+          <ArrowLink href="/news">All news</ArrowLink>
+          <Button href="/#contact">Media enquiries &rarr;</Button>
+        </div>
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="pb-24">
+        <div class="mx-auto w-full max-w-site px-8">
+          <Eyebrow class="cf-reveal mb-9 pl-(--cf-inset)">Keep reading</Eyebrow>
+          <div data-rail class="cf-reveal grid border-y border-hairline lg:grid-cols-3">
+            {related.map((p, i) => <NewsCard post={p} first={i === 0} />)}
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>

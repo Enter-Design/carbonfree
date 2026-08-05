@@ -1,6 +1,6 @@
 export const site = {
   name: 'CarbonFree Technology',
-  tagline: 'We build solar at scale to power Ontario’s clean energy future.',
+  tagline: 'We build solar at scale to power Canada’s clean energy future.',
   address: '1 St Clair Ave West, Suite 801, Toronto ON',
 } as const;
 
@@ -16,7 +16,7 @@ export const nav = [
       { label: 'Leadership', href: '/about#leadership' },
     ],
   },
-  { label: 'News', href: '/#news' },
+  { label: 'News', href: '/news' },
 ] as const;
 
 /** Single source of truth for figures used across the site. */

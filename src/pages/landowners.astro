@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import HeroCard from '../components/HeroCard.astro';
+import KeyFacts from '../components/KeyFacts.astro';
+import SectionHead from '../components/SectionHead.astro';
+import NumberedGrid from '../components/NumberedGrid.astro';
+import Steps from '../components/Steps.astro';
+import FitList from '../components/FitList.astro';
+import Split from '../components/Split.astro';
+import Faq from '../components/Faq.astro';
+import Callout from '../components/Callout.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Button from '../components/Button.astro';
+import { keyFacts, benefits, criteria, steps, expectations, faq } from '../data/landowners';
+import { facts } from '../data/site';
+
+const trust = [
+  { lead: 'No cost to', strong: 'apply', tail: '' },
+  { strong: 'No', tail: 'obligation' },
+  { lead: 'You keep', strong: 'ownership', tail: '' },
+  { strong: facts.projects, tail: 'projects delivered since 2006' },
+];
+---
+
+<BaseLayout
+  title="Lease your land for solar — CarbonFree"
+  description="Lease underused land to CarbonFree for a utility-scale solar project and earn contracted annual income for decades. No cost, no obligation, and you keep the land."
+  pivot="#daylight"
+  triggerAt={0.8}
+>
+  <Hero
+    eyebrow="Earn from land you already own"
+    image="https://carbonfree.com/wp-content/uploads/2014/11/GRS1.jpg"
+    imageAlt="Ground-mounted solar across open land"
+    trust={trust}
+  >
+    <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
+      Turn acres you aren&rsquo;t using into <span class="cf-gradient-text-dual">decades of contracted income.</span>
+    </h1>
+
+    <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted">
+      If you own rural, marginal or industrial land near available grid capacity, it may be able to
+      host a utility-scale solar project. Long-term lease payments, nothing out of pocket, and the
+      land stays yours throughout.
+    </p>
+
+    <div slot="actions" class="cf-reveal flex flex-wrap items-center gap-5.5">
+      <Button href="#assessment">See what your land could earn &rarr;</Button>
+      <Button href="#how" variant="ghost">How leasing works &rarr;</Button>
+    </div>
+
+    <HeroCard slot="aside" flag="What we look for">
+      <p class="mb-4.5 text-[14.5px] text-ink-muted">
+        Interconnection capacity nearby is usually the deciding factor &mdash; more than acreage,
+        and more than soil.
+      </p>
+      <ul class="grid gap-3">
+        {criteria.slice(0, 4).map((c) => (
+          <li class="flex items-start gap-3 text-[14.5px] text-ink">
+            <span class="mt-1.5 size-2 shrink-0 rotate-45 bg-solar"></span><span>{c}</span>
+          </li>
+        ))}
+      </ul>
+    </HeroCard>
+  </Hero>
+
+  <div id="daylight"><KeyFacts items={keyFacts} /></div>
+
+  <section class="py-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="Why landowners lease to us"
+        title="Income that doesn&rsquo;t depend on a good year."
+        body="For most owners, a solar lease earns more per acre than leaving marginal ground idle &mdash; without weather risk, input costs or labour."
+      />
+      <NumberedGrid items={benefits} />
+      <Callout title="Get your own advice before you sign">
+        We encourage every landowner to review the agreement with their own lawyer or financial
+        advisor, and to confirm the property tax treatment with their accountant. A lease that only
+        makes sense when it is explained by the person offering it is not a lease worth signing.
+      </Callout>
+    </div>
+  </section>
+
+  <section id="fit">
+    <Split
+      image="https://carbonfree.com/wp-content/uploads/2014/11/KS.jpg"
+      imageAlt="Utility-scale solar project"
+      badgeValue="4,250"
+      badgeLabel="acres already under<br>option in Ontario"
+    >
+      <Eyebrow>Does your land qualify?</Eyebrow>
+      <h2 class="mt-4.5 mb-5.5 text-headline font-bold">The parcels that earn least are often the ones we want.</h2>
+      <p class="mb-4.5 text-[17px] text-ink-muted">
+        We are actively securing land for a second Ontario portfolio of more than a gigawatt. Ground
+        that is awkward to work, low-yield or sitting idle is frequently the best candidate &mdash;
+        what matters most is what is nearby, not what grows on it.
+      </p>
+      <FitList items={criteria} />
+      <p class="mt-6.5 text-[15px] text-ink-muted">
+        Not sure whether yours fits? That is exactly what the assessment is for.
+      </p>
+    </Split>
+  </section>
+
+  <section id="how" class="py-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="How it works"
+        title="From first enquiry to first payment, in four steps."
+      />
+      <Steps items={steps} />
+    </div>
+  </section>
+
+  <section class="pb-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead eyebrow="What to expect" title="Straight answers, before you ask." />
+      <FitList items={expectations} />
+    </div>
+  </section>
+
+  <section id="faq" class="pb-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead eyebrow="FAQ" title="Questions landowners ask." />
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <div id="assessment">
+    <ContactCTA
+      eyebrow="Free land assessment"
+      title="Find out what your land could earn."
+      body="Tell us where it is and roughly how big it is. We&rsquo;ll tell you whether it qualifies — and if it doesn&rsquo;t, we&rsquo;ll tell you that too."
+      submit="Request my land assessment"
+      note="No cost · No obligation · You keep ownership"
+      fields={[
+        { label: 'Full name', half: true },
+        { label: 'Phone', type: 'tel', half: true },
+        { label: 'Email', type: 'email', half: true },
+        { label: 'Approximate acreage', half: true },
+        { label: 'Where is the land?', half: true },
+        { label: 'Current use', type: 'select', options: ['Idle / unused', 'Pasture or grazing', 'Row crops', 'Industrial or brownfield', 'Other'], half: true },
+        { label: 'Anything else we should know?', type: 'textarea' },
+      ]}
+    />
+  </div>
+</BaseLayout>

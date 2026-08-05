@@ -7,9 +7,9 @@ import { stats } from '../data/site';
       {stats.map((s, i) => (
         <div
           class:list={[
-            'cf-reveal border-hairline px-8 py-12',
+            'cf-reveal border-hairline cell-inset py-12',
             'border-l',
-            i % 2 === 0 && 'max-lg:border-l-0 max-lg:pl-0',
+            i % 2 === 0 && 'max-lg:border-l-0',
             i > 1 && 'max-lg:border-t',
             i === stats.length - 1 && 'lg:border-r',
           ]}

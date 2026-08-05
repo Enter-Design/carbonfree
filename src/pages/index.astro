@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import HeroCard from '../components/HeroCard.astro';
@@ -18,6 +19,10 @@ import ArrowLink from '../components/ArrowLink.astro';
 import { services, regions } from '../data/home';
 import { facts } from '../data/site';
 
+const posts = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
 const trust = [
   { strong: '100%', tail: 'Canadian-owned' },
   { strong: facts.projects, tail: 'projects delivered' },
@@ -32,13 +37,13 @@ const trust = [
   pivot="#daylight"
 >
   <Hero
-    eyebrow="Utility-scale solar in Ontario since 2006"
+    eyebrow="Utility-scale solar since 2006"
     image="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=2000&q=80"
     imageAlt="Utility-scale solar farm at dawn"
     trust={trust}
   >
     <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
-      We build solar at scale to <span class="cf-gradient-text-dual">power Ontario&rsquo;s clean energy future.</span>
+      We build solar at scale to <span class="cf-gradient-text-dual">power Canada&rsquo;s clean energy future.</span>
     </h1>
 
     <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted">
@@ -99,7 +104,7 @@ const trust = [
         body={`State-of-the-art rooftop, canopy and ground-mounted systems spanning a wide range of geographies, climates and regulatory jurisdictions &mdash; ${facts.ontarioProjects} in Ontario alone.`}
       />
       <ProjectGrid />
-      <div class="cf-reveal mt-10"><ArrowLink href="/projects">See the full project portfolio</ArrowLink></div>
+      <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href="/projects">See the full project portfolio</ArrowLink></div>
     </div>
   </section>
 
@@ -139,7 +144,8 @@ const trust = [
   <section id="news" class="py-28">
     <div class="mx-auto w-full max-w-site px-8">
       <SectionHead eyebrow="News &amp; announcements" title="The latest from CarbonFree." />
-      <NewsGrid />
+      <NewsGrid posts={posts} />
+      <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href="/news">All news</ArrowLink></div>
     </div>
   </section>
 

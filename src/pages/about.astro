@@ -37,7 +37,7 @@ const trust = [
     trust={trust}
   >
     <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
-      We build solar at scale to <span class="cf-gradient-text-dual">power Ontario&rsquo;s clean energy future.</span>
+      We build solar at scale to <span class="cf-gradient-text-dual">power Canada&rsquo;s clean energy future.</span>
     </h1>
 
     <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted">
@@ -138,14 +138,14 @@ const trust = [
       />
       <div data-rail class="cf-reveal grid border-t border-l border-hairline sm:grid-cols-2 lg:grid-cols-3">
         {leadership.map((p) => (
-          <div class="group relative overflow-hidden border-r border-b border-hairline bg-white/[0.02] px-6.5 pt-7 pb-7.5 transition duration-300">
+          <div class="group relative overflow-hidden border-r border-b border-hairline bg-white/[0.02] cell-inset pt-7 pb-7.5 transition duration-300">
             <span class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100"></span>
             <div class="text-[17px] font-bold">{p.name}</div>
             <div class="mt-1.5 font-din text-[13.5px] text-ink-muted">{p.role}</div>
           </div>
         ))}
       </div>
-      <div class="cf-reveal mt-10"><ArrowLink href="/leadership">Full leadership profiles</ArrowLink></div>
+      <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href="/leadership">Full leadership profiles</ArrowLink></div>
     </div>
   </section>
 

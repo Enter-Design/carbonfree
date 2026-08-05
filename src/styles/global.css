@@ -75,6 +75,20 @@
 
   /* Full-bleed gutter that keeps split sections aligned to the 1280 grid */
   --cf-edge: max(clamp(32px, 6vw, 90px), calc(50vw - 640px + 32px));
+
+  /* Every grid cell insets its content by this much.
+     The background guides sit on the same 12-column rhythm the content grids
+     use, so a cell with zero padding puts its text flush against a guide line
+     — which reads as a border the copy is crammed into. Inset uniformly and
+     the guides sit behind the layout instead of fighting it.
+
+     Two ways to apply it:
+       cell-inset        — grid cells, pads both sides
+       pl-(--cf-inset)   — loose flow content (headings, lists, links, prose)
+
+     Anything that sits directly inside a `.max-w-site` container and is not
+     itself a bordered box needs one of the two, or it lands on a guide. */
+  --cf-inset: 26px;
 }
 
 /* Pages that opt out of the sunrise (news, legal) lock to daylight. */
@@ -88,7 +102,7 @@
   --cf-solar-deep: #12a86c;
   --cf-signal: #1fd286;
   --cf-hairline: rgb(12 22 30 / 0.13);
-  --cf-hairline-soft: rgb(12 22 30 / 0.07);
+  --cf-hairline-soft: rgb(12 22 30 / 0.045);
   --cf-nav: rgb(255 255 255 / 0.82);
   --cf-veil-heavy: rgb(255 255 255 / 0.94);
   --cf-veil-mid: rgb(255 255 255 / 0.72);
@@ -128,7 +142,9 @@
     position: fixed;
     inset: 0;
     z-index: -2;
-    background: #070809;
+    /* Follows the palette so a page without the sunrise engine still renders
+       correctly. The engine overwrites this inline once it starts painting. */
+    background: var(--cf-surface);
   }
 
   /* Vertical 12-column guides behind everything */
@@ -200,6 +216,45 @@
     .cf-reveal { opacity: 1; transform: none; transition: none; }
   }
 
+  /* Unresolved copy in a draft release — [Date], [Fengate to complete] */
+  .cf-todo {
+    display: inline-block;
+    border: 1px dashed var(--cf-solar);
+    color: var(--cf-solar);
+    padding: 1px 9px;
+    font-family: var(--font-din);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    vertical-align: 1px;
+  }
+
+  /* Rendered markdown body. Utilities can't reach generated HTML. */
+  .cf-prose { max-width: 74ch; }
+  .cf-prose > p {
+    font-size: 17.5px;
+    color: var(--cf-ink-muted);
+    margin-bottom: 24px;
+  }
+  .cf-prose > p:first-of-type {
+    font-size: clamp(19px, 1.8vw, 22px);
+    color: var(--cf-ink);
+    line-height: 1.45;
+    margin-bottom: 34px;
+  }
+  .cf-prose > h2 {
+    font-family: var(--font-din);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cf-solar);
+    margin: 56px 0 22px;
+  }
+  .cf-prose a { color: var(--cf-solar); text-decoration: underline; text-underline-offset: 3px; }
+  .cf-prose a:hover { color: var(--cf-solar-deep); }
+
   /* Diamond marker */
   .cf-mark {
     flex: 0 0 auto;
@@ -212,6 +267,9 @@
 
 @utility nav-surface {
   background: var(--cf-nav);
+}
+@utility cell-inset {
+  padding-inline: var(--cf-inset);
 }
 @utility edge-gutter-l {
   padding-left: var(--cf-edge);
