@@ -148,6 +148,7 @@ const filters = ['All', ...regions, ...statuses];
 </BaseLayout>
 
 <script>
+function mountFilters(): void {
   const buttons = [...document.querySelectorAll<HTMLButtonElement>('button[data-filter]')];
   const cards = [...document.querySelectorAll<HTMLElement>('#proj-grid > article')];
   const count = document.getElementById('proj-count');
@@ -175,4 +176,7 @@ const filters = ['All', ...regions, ...statuses];
       b.addEventListener('click', () => apply(b.dataset.filter ?? 'All'));
     }
   }
+}
+
+document.addEventListener('astro:page-load', mountFilters);
 </script>

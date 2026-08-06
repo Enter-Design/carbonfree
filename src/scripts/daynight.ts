@@ -87,6 +87,28 @@ const mix = (a: RGB, b: RGB, t: number): RGB =>
 const rgb = (c: RGB) => `rgb(${c[0]} ${c[1]} ${c[2]})`;
 const rgba = (c: RGB, a: number) => `rgb(${c[0]} ${c[1]} ${c[2]} / ${a})`;
 
+interface SunriseHandle {
+  destroy(): void;
+  /** Animate the palette to a tone (0 = night, 1 = day) and resolve when done. */
+  animateTo(value: number, ms?: number): Promise<void>;
+}
+
+let active: SunriseHandle | null = null;
+
+/**
+ * Run the palette back to night and resolve when it lands there.
+ * Used by the page transition, so a visitor who was reading in daylight
+ * watches the sun set before the next page arrives at the top, in the dark.
+ */
+export function sunset(ms = 650): Promise<void> {
+  return active ? active.animateTo(0, ms) : Promise.resolve();
+}
+
+export function teardownSunrise(): void {
+  active?.destroy();
+  active = null;
+}
+
 export function initSunrise(options: SunriseOptions = {}): void {
   const {
     pivot = '#daylight',
@@ -100,6 +122,10 @@ export function initSunrise(options: SunriseOptions = {}): void {
   const sky = document.querySelector<HTMLElement>('.cf-sky');
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (!sky) return;
+
+  teardownSunrise();
+  const controller = new AbortController();
+  const { signal } = controller;
 
   const root = document.documentElement.style;
   const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
@@ -183,6 +209,33 @@ export function initSunrise(options: SunriseOptions = {}): void {
     }
   }
 
+  /* Drive the palette directly, independent of scroll. */
+  function animateTo(value: number, ms = 650): Promise<void> {
+    return new Promise((resolve) => {
+      const from = tone;
+      target = value;
+      if (reduced || ms <= 0) {
+        tone = value;
+        paint(tone);
+        resolve();
+        return;
+      }
+      const t0 = performance.now();
+      const frame = (now: number) => {
+        const t = clamp((now - t0) / ms);
+        tone = from + (value - from) * smooth(t);
+        paint(tone);
+        if (t < 1) requestAnimationFrame(frame);
+        else {
+          tone = value;
+          paint(tone);
+          resolve();
+        }
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
   function triggerPoint(): number {
     const el = document.querySelector(pivot);
     if (!el) return Infinity;
@@ -204,6 +257,11 @@ export function initSunrise(options: SunriseOptions = {}): void {
   paint(tone);
   header?.classList.toggle('is-scrolled', window.scrollY > 40);
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('scroll', onScroll, { passive: true, signal });
+  window.addEventListener('resize', onScroll, { signal });
+
+  active = {
+    destroy: () => controller.abort(),
+    animateTo,
+  };
 }

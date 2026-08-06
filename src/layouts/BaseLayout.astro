@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -37,6 +38,7 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="https://use.typekit.net/ymv7jjc.css" />
+    <ClientRouter />
   </head>
 
   <body
@@ -45,31 +47,16 @@ const {
     data-trigger-at={String(triggerAt)}
     data-sunrise={palette === 'day' ? 'off' : 'on'}
   >
-    <div class="cf-sky" aria-hidden="true"></div>
-    <div class="cf-guides" aria-hidden="true"><div></div></div>
+    <div class="cf-sky" aria-hidden="true" transition:persist="sky"></div>
+    <div class="cf-guides" aria-hidden="true" transition:persist="guides"><div></div></div>
 
     <Header />
     <main class="relative z-1"><slot /></main>
     <Footer />
 
-    <!--
-      One bundled module script. Config is read from data attributes on <body>
-      rather than passed with define:vars — define:vars implicitly marks a script
-      is:inline, and inline scripts are not processed by Astro, so the relative
-      import path would ship to the browser unresolved.
-    -->
     <script>
-      import { initReveal } from '../scripts/reveal';
-      import { initSunrise } from '../scripts/daynight';
-
-      initReveal();
-
-      if (document.body.dataset.sunrise === 'on') {
-        initSunrise({
-          pivot: document.body.dataset.pivot || '#daylight',
-          triggerAt: Number(document.body.dataset.triggerAt ?? 0.55),
-        });
-      }
+      import '../scripts/init';
     </script>
+
   </body>
 </html>
