@@ -5,6 +5,6 @@ import type { CollectionEntry } from 'astro:content';
 interface Props { posts: CollectionEntry<'news'>[] }
 const { posts } = Astro.props;
 ---
-<div data-rail class="cf-reveal grid border-y border-hairline lg:grid-cols-3">
+<div class="cf-reveal grid border-y border-hairline lg:grid-cols-3">
   {posts.map((post, i) => <NewsCard post={post} first={i === 0} />)}
 </div>

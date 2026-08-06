@@ -13,7 +13,8 @@ import ContactCTA from '../components/ContactCTA.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import Button from '../components/Button.astro';
 import ArrowLink from '../components/ArrowLink.astro';
-import { values, leadership } from '../data/about';
+import { values } from '../data/about';
+import { leadership } from '../data/leadership';
 import { regions } from '../data/home';
 import { facts } from '../data/site';
 
@@ -98,8 +99,10 @@ const trust = [
       <SectionHead
         eyebrow="Twenty years"
         title="Successful at every stage of this company&rsquo;s life."
-        body="Select a year to see what happened. Arrow keys work too."
+        body="Keep scrolling &mdash; the timeline moves with you."
       />
+    </div>
+    <div class="mx-auto w-full max-w-site px-8">
       <Timeline />
     </div>
   </section>
@@ -136,9 +139,9 @@ const trust = [
         title="Developers, financiers, lawyers, engineers and asset managers."
         body="Many of whom have worked together for well over a decade. The depth and continuity of this team is what carries a project from first parcel to the grid."
       />
-      <div data-rail class="cf-reveal grid border-t border-l border-hairline sm:grid-cols-2 lg:grid-cols-3">
+      <div class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {leadership.map((p) => (
-          <div class="group relative overflow-hidden border-r border-b border-hairline bg-white/[0.02] cell-inset pt-7 pb-7.5 transition duration-300">
+          <div class="group relative overflow-hidden border border-hairline bg-panel cell-inset pt-7 pb-7.5 transition duration-300 hover:border-solar/45">
             <span class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100"></span>
             <div class="text-[17px] font-bold">{p.name}</div>
             <div class="mt-1.5 font-din text-[13.5px] text-ink-muted">{p.role}</div>

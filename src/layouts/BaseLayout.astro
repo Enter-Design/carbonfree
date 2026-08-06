@@ -47,7 +47,6 @@ const {
   >
     <div class="cf-sky" aria-hidden="true"></div>
     <div class="cf-guides" aria-hidden="true"><div></div></div>
-    <div class="cf-rails" aria-hidden="true"><div></div></div>
 
     <Header />
     <main class="relative z-1"><slot /></main>
@@ -60,11 +59,10 @@ const {
       import path would ship to the browser unresolved.
     -->
     <script>
-      import { initReveal, initRails } from '../scripts/reveal';
+      import { initReveal } from '../scripts/reveal';
       import { initSunrise } from '../scripts/daynight';
 
       initReveal();
-      initRails();
 
       if (document.body.dataset.sunrise === 'on') {
         initSunrise({

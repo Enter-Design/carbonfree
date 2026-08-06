@@ -21,18 +21,6 @@ export const values = [
   },
 ] as const;
 
-export const leadership = [
-  { name: 'Daniel Soper', role: 'Chief Executive Officer' },
-  { name: 'David Oxtoby', role: 'Chair' },
-  { name: 'Laurence Goldberg', role: 'COO & General Counsel' },
-  { name: 'Andrew Kennedy', role: 'Chief Financial Officer' },
-  { name: 'Graham Erion', role: 'Chief Commercial Officer' },
-  { name: 'Doug Deeks', role: 'SVP, Project Development' },
-  { name: 'Maged Sami', role: 'SVP, Engineering' },
-  { name: 'Emma Coyle', role: 'VP, Legal' },
-  { name: 'Judy Qi', role: 'Director, Corporate Development' },
-] as const;
-
 export interface Milestone {
   year: string;
   tick: string;

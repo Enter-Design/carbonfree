@@ -4,14 +4,14 @@ import Button from './Button.astro';
 import ArrowLink from './ArrowLink.astro';
 import { doors } from '../data/home';
 ---
-<section id="doors" data-rail class="border-t border-hairline">
+<section id="doors" class="border-t border-hairline">
   <div class="mx-auto w-full max-w-site px-8">
     <div class="cf-reveal pl-(--cf-inset) pt-14 pb-6.5">
       <Eyebrow>Where do you fit?</Eyebrow>
       <h2 class="mt-3.5 text-[clamp(24px,2.4vw,32px)] font-bold">Two ways to work with us.</h2>
     </div>
 
-    <div data-rail class="grid border-y border-hairline md:grid-cols-2">
+    <div class="grid border-y border-hairline md:grid-cols-2">
       {doors.map((door, i) => (
         <div
           id={door.id}

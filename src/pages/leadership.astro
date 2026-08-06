@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import HeroCard from '../components/HeroCard.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import Button from '../components/Button.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import { leadership } from '../data/leadership';
+import { facts } from '../data/site';
+
+const trust = [
+  { strong: String(leadership.length), tail: 'in the leadership team' },
+  { lead: 'Together since', strong: '2007', tail: 'in several cases' },
+  { strong: facts.projects, tail: 'projects delivered' },
+  { lead: 'Based in', strong: 'Toronto', tail: '' },
+];
+---
+
+<BaseLayout
+  title="Leadership — CarbonFree Technology"
+  description="CarbonFree's leadership team: developers, financiers, lawyers, engineers and asset managers, many of whom have worked together for well over a decade."
+  pivot="#daylight"
+  triggerAt={0.8}
+>
+  <Hero
+    eyebrow="Leadership"
+    image="https://carbonfree.com/wp-content/uploads/2014/11/GRS1.jpg"
+    imageAlt="CarbonFree solar project"
+    trust={trust}
+  >
+    <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
+      The people who <span class="cf-gradient-text-dual">get the projects built.</span>
+    </h1>
+
+    <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted">
+      Developers, financiers, lawyers, engineers and asset managers &mdash; many of whom have worked
+      together for well over a decade. That continuity is what carries a project from first parcel
+      to the grid.
+    </p>
+
+    <div slot="actions" class="cf-reveal flex flex-wrap items-center gap-5.5">
+      <Button href="#team">Meet the team &rarr;</Button>
+      <Button href="/about" variant="ghost">About CarbonFree &rarr;</Button>
+    </div>
+
+    <HeroCard slot="aside" flag="Why it matters">
+      <blockquote class="mb-4.5 text-[clamp(21px,2.1vw,27px)] leading-[1.18] font-bold tracking-[-0.02em]">
+        A solar lease is a <span class="cf-gradient-text-dual">thirty-year relationship.</span>
+      </blockquote>
+      <p class="text-[14.5px] text-ink-muted">
+        Landowners, First Nations partners and power buyers are all choosing a counterparty for
+        decades, not a vendor for a transaction. It is reasonable to want to know who they are.
+      </p>
+    </HeroCard>
+  </Hero>
+
+  <section id="team" class="py-28" style="scroll-margin-top:96px">
+    <div id="daylight" class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="The team"
+        title="Nine people, one company, for most of twenty years."
+        body="CarbonFree was founded in Toronto in 2006. Several of the team joined within the first two years and are still here."
+      />
+
+      <div class="grid gap-px">
+        {leadership.map((p, i) => (
+          <article
+            class:list={[
+              'cf-plate grid items-start gap-x-12 gap-y-6 border-hairline py-12 lg:grid-cols-[220px_1fr]',
+              i > 0 && 'border-t',
+            ]}
+          >
+            <div class="relative overflow-hidden border border-hairline bg-[#0b0d0f]">
+              <img
+                src={p.photo}
+                alt={p.name}
+                loading={i < 3 ? 'eager' : 'lazy'}
+                width="440"
+                height="440"
+                class="aspect-square w-full object-cover object-top opacity-95 transition duration-500 hover:opacity-100"
+              />
+            </div>
+
+            <div class="pl-(--cf-inset) lg:pl-0">
+              <h2 class="text-[clamp(23px,2.2vw,29px)] font-bold">{p.name}</h2>
+              <p class="mt-2 font-din text-[14px] tracking-[0.06em] text-solar uppercase">{p.role}</p>
+
+              <div class="mt-5.5 grid max-w-[68ch] gap-4">
+                {p.bio.map((para) => (
+                  <p class="text-[16.5px] text-ink-muted">{para}</p>
+                ))}
+              </div>
+
+              {p.linkedin && (
+                <a
+                  href={p.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-6 inline-flex items-center gap-2.5 border border-hairline bg-panel px-4 py-2.5 font-din text-[13px] tracking-[0.04em] text-ink uppercase transition duration-200 hover:border-solar hover:text-solar"
+                >
+                  <svg width="15" height="15" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true">
+                    <path d="M160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160C544 124.7 515.3 96 480 96L160 96zM165 266.2L231.5 266.2L231.5 480L165 480L165 266.2zM236.7 198.5C236.7 219.8 219.5 237 198.2 237C176.9 237 159.7 219.8 159.7 198.5C159.7 177.2 176.9 160 198.2 160C219.5 160 236.7 177.2 236.7 198.5zM413.9 480L413.9 376C413.9 351.2 413.4 319.3 379.4 319.3C344.8 319.3 339.5 346.3 339.5 374.2L339.5 480L273.1 480L273.1 266.2L336.8 266.2L336.8 295.4L337.7 295.4C346.6 278.6 368.3 260.9 400.6 260.9C467.8 260.9 480.3 305.2 480.3 362.8L480.3 480L413.9 480z"/>
+                  </svg>
+                  LinkedIn
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="cf-plate cf-reveal mt-14 pl-(--cf-inset)">
+        <p class="max-w-[62ch] text-[17px] text-ink-muted">
+          Looking for someone specific? Media enquiries go to Emma Coyle. First Nations communities
+          can reach Doug Deeks directly.
+        </p>
+        <div class="mt-5"><ArrowLink href="/#contact">Get in touch</ArrowLink></div>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA
+    title="Talk to the people who&rsquo;ll do the work."
+    body="Land, power, partnership or capital — you&rsquo;ll be dealing with this team, not a call centre."
+    showDoors
+  />
+</BaseLayout>

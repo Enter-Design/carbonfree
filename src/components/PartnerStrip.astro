@@ -1,17 +1,9 @@
 ---
 import { partners } from '../data/home';
 ---
-<div data-rail class="cf-reveal mt-9 grid border border-hairline sm:grid-cols-2 lg:grid-cols-4">
-  {partners.map((p, i) => (
-    <div
-      class:list={[
-        'cell-inset py-7.5',
-        i > 0 && 'lg:border-l lg:border-hairline',
-        i % 2 === 1 && 'sm:max-lg:border-l sm:max-lg:border-hairline',
-        i > 1 && 'sm:max-lg:border-t sm:max-lg:border-hairline',
-        'max-sm:border-t max-sm:border-hairline first:max-sm:border-t-0',
-      ]}
-    >
+<div class="cf-reveal mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  {partners.map((p) => (
+    <div class="border border-hairline bg-panel cell-inset py-7.5 transition duration-300 hover:border-solar/45">
       <div class="text-base font-bold text-ink">{p.name}</div>
       <div class="mt-1.5 font-din text-[13px] text-ink-muted">{p.role}</div>
     </div>

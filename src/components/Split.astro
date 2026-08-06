@@ -8,20 +8,20 @@ interface Props {
 }
 const { image, imageAlt, reverse = false, badgeValue, badgeLabel } = Astro.props;
 ---
-<div data-rail class="grid border-t border-hairline lg:grid-cols-2">
+<div class="grid border-t border-hairline lg:grid-cols-2">
   <div class:list={['cf-reveal relative min-h-[380px] lg:min-h-[560px]', reverse && 'lg:order-2']}>
     <img src={image} alt={imageAlt} class="absolute inset-0 size-full object-cover" />
     {badgeValue && (
-      <div class="absolute bottom-0 left-0 z-2 border-t border-r border-hairline bg-veil-panel px-7 py-5.5 backdrop-blur-lg">
-        <div class="text-[40px] font-bold text-signal">{badgeValue}</div>
-        <div class="font-din text-[13px] text-ink-muted" set:html={badgeLabel} />
+      <div class="absolute bottom-0 left-0 z-2 border-t border-r border-white/15 bg-black/65 px-7 py-5.5 backdrop-blur-lg">
+        <div class="text-[40px] font-bold text-[#1fd286]">{badgeValue}</div>
+        <div class="font-din text-[13px] text-white/70" set:html={badgeLabel} />
       </div>
     )}
   </div>
 
   <div
     class:list={[
-      'cf-reveal flex flex-col justify-center border-hairline px-8 py-16 lg:py-24',
+      'cf-plate cf-reveal flex flex-col justify-center border-hairline px-8 py-16 lg:py-24',
       reverse ? 'lg:order-1 lg:border-r lg:edge-gutter-l' : 'lg:border-l lg:edge-gutter-r',
       'max-lg:border-t',
     ]}

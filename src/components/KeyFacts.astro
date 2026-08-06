@@ -3,7 +3,7 @@ interface Item { value: string; label: string }
 interface Props { items: readonly Item[] }
 const { items } = Astro.props;
 ---
-<div data-rail class="border-b border-hairline bg-surface-alt">
+<div class="border-b border-hairline bg-surface-alt">
   <div class="mx-auto w-full max-w-site px-8">
     <div class="grid sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item, i) => (

@@ -18,8 +18,8 @@ const stamp = (p: (typeof posts)[number]) =>
   description="Announcements, project updates and press releases from CarbonFree Technology."
   pivot="#daylight"
 >
-  <section data-rail class="border-b border-hairline pt-44 pb-20">
-    <div class="mx-auto w-full max-w-site px-8">
+  <section class="border-b border-hairline pt-44 pb-20">
+    <div class="cf-plate mx-auto w-full max-w-site px-8">
       <Eyebrow class="cf-reveal">Newsroom</Eyebrow>
       <h1 class="cf-reveal mt-5 max-w-[18ch] text-display font-bold">
         What we&rsquo;re <span class="cf-gradient-text">building, and where.</span>
@@ -32,7 +32,7 @@ const stamp = (p: (typeof posts)[number]) =>
   </section>
 
   {lead && (
-    <section id="daylight" data-rail class="border-b border-hairline">
+    <section id="daylight" class="border-b border-hairline">
       <div class="mx-auto w-full max-w-site px-8">
         <a href={`/news/${lead.id}`} class="group grid gap-0 py-0 lg:grid-cols-[1.1fr_0.9fr]">
           <div class="cf-reveal relative min-h-[300px] overflow-hidden lg:min-h-[440px]">
@@ -42,7 +42,7 @@ const stamp = (p: (typeof posts)[number]) =>
               class="absolute inset-0 size-full object-cover opacity-80 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
             />
           </div>
-          <div class="cf-reveal flex flex-col justify-center border-hairline cell-inset py-12 max-lg:border-t lg:border-l lg:py-16 lg:pl-14">
+          <div class="cf-plate cf-reveal flex flex-col justify-center border-hairline cell-inset py-12 max-lg:border-t lg:border-l lg:py-16 lg:pl-14">
             <div class="mb-4 flex flex-wrap items-center gap-x-3 font-din text-[12.5px] tracking-[0.1em] uppercase">
               <span class="text-solar">{stamp(lead)}</span>
               <span class="text-ink-muted">{lead.data.category}</span>
@@ -62,11 +62,11 @@ const stamp = (p: (typeof posts)[number]) =>
     <section class="py-24">
       <div class="mx-auto w-full max-w-site px-8">
         <Eyebrow class="cf-reveal mb-9 pl-(--cf-inset)">Earlier</Eyebrow>
-        <div data-rail class="cf-reveal grid border-t border-hairline">
+        <div class="cf-reveal grid border-t border-hairline">
           {rest.map((post) => (
             <a
               href={`/news/${post.id}`}
-              class="group grid items-start gap-x-10 gap-y-3 border-b border-hairline cell-inset py-8 transition duration-300 hover:bg-white/[0.02] lg:grid-cols-[200px_1fr_auto]"
+              class="cf-plate group grid items-start gap-x-10 gap-y-3 border-b border-hairline cell-inset py-8 transition duration-300 lg:grid-cols-[200px_1fr_auto]"
             >
               <div class="flex flex-wrap items-center gap-x-3 font-din text-[12.5px] tracking-[0.1em] uppercase">
                 <span class="text-solar">{stamp(post)}</span>

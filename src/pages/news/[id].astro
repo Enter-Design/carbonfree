@@ -30,13 +30,13 @@ const daylightOn = d.awards.length > 0 ? 'awards' : 'body';
 <BaseLayout title={`${d.title} — CarbonFree`} description={d.dek} pivot="#daylight" triggerAt={0.8}>
   <article>
     <!-- HERO -->
-    <section data-rail class="relative flex min-h-screen items-center overflow-hidden border-b border-hairline pt-32 pb-20">
+    <section class="relative flex min-h-screen items-center overflow-hidden border-b border-hairline pt-32 pb-20">
       <div class="absolute inset-0 z-0">
         <img src={d.image} alt={d.imageAlt} class="size-full object-cover opacity-34" />
         <div class="absolute inset-0 bg-[linear-gradient(90deg,var(--cf-veil-heavy)_4%,var(--cf-veil-mid)_58%,var(--cf-veil-light))]"></div>
       </div>
 
-      <div class="relative z-2 mx-auto w-full max-w-site px-8">
+      <div class="cf-plate relative z-2 mx-auto w-full max-w-site px-8">
         <div class="cf-reveal flex flex-wrap items-center gap-3.5">
           <Eyebrow>{d.kicker}</Eyebrow>
           <span class="font-din text-[13px] text-ink-muted">
@@ -63,13 +63,13 @@ const daylightOn = d.awards.length > 0 ? 'awards' : 'body';
 
     <!-- AWARDED PROJECTS — daylight begins here -->
     {d.awards.length > 0 && (
-      <section id={daylightOn === 'awards' ? 'daylight' : undefined} data-rail class="border-b border-hairline">
+      <section id={daylightOn === 'awards' ? 'daylight' : undefined} class="border-b border-hairline">
         <div class="mx-auto w-full max-w-site px-8">
           <div class="grid lg:grid-cols-3">
             {d.awards.map((a, i) => (
               <div
                 class:list={[
-                  'cf-reveal border-hairline cell-inset py-10',
+                  'cf-reveal border-hairline bg-panel cell-inset py-10',
                   i > 0 && 'lg:border-l max-lg:border-t',
                 ]}
               >
@@ -92,7 +92,7 @@ const daylightOn = d.awards.length > 0 ? 'awards' : 'body';
     <!-- BODY -->
     <section id={daylightOn === 'body' ? 'daylight' : undefined} class="py-24">
       <div class="mx-auto w-full max-w-site px-8">
-        <div class="cf-prose cf-reveal pl-(--cf-inset)"><Content /></div>
+        <div class="cf-prose cf-plate cf-reveal pl-(--cf-inset)"><Content /></div>
 
         <!-- QUOTES -->
         {d.quotes.length > 0 && (
@@ -120,9 +120,9 @@ const daylightOn = d.awards.length > 0 ? 'awards' : 'body';
         {d.contacts.length > 0 && (
           <div class="cf-reveal mt-16">
             <Eyebrow class="mb-6 pl-(--cf-inset)">Media contacts</Eyebrow>
-            <div data-rail class="grid border border-hairline sm:grid-cols-2">
+            <div class="grid border border-hairline sm:grid-cols-2">
               {d.contacts.map((c, i) => (
-                <div class:list={['cell-inset py-7.5', i > 0 && 'sm:border-l sm:border-hairline max-sm:border-t max-sm:border-hairline']}>
+                <div class:list={['bg-panel cell-inset py-7.5', i > 0 && 'sm:border-l sm:border-hairline max-sm:border-t max-sm:border-hairline']}>
                   <div class="mb-1 text-base font-bold">
                     {isPlaceholder(c.name) ? <span class="cf-todo">{c.name}</span> : c.name}
                   </div>
@@ -149,7 +149,7 @@ const daylightOn = d.awards.length > 0 ? 'awards' : 'body';
       <section class="pb-24">
         <div class="mx-auto w-full max-w-site px-8">
           <Eyebrow class="cf-reveal mb-9 pl-(--cf-inset)">Keep reading</Eyebrow>
-          <div data-rail class="cf-reveal grid border-y border-hairline lg:grid-cols-3">
+          <div class="cf-reveal grid border-y border-hairline lg:grid-cols-3">
             {related.map((p, i) => <NewsCard post={p} first={i === 0} />)}
           </div>
         </div>

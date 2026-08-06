@@ -3,11 +3,11 @@ interface Item { n: string; title: string; body: string }
 interface Props { items: readonly Item[] }
 const { items } = Astro.props;
 ---
-<div data-rail class="grid border-y border-hairline sm:grid-cols-2 lg:grid-cols-4">
+<div class="grid border-y border-hairline sm:grid-cols-2 lg:grid-cols-4">
   {items.map((item, i) => (
     <div
       class:list={[
-        'cf-reveal group relative overflow-hidden border-hairline bg-white/[0.02] cell-inset py-10 transition duration-300',
+        'cf-reveal group relative overflow-hidden border-hairline bg-panel cell-inset py-10 transition duration-300',
         i > 0 && 'lg:border-l',
         i % 2 === 1 && 'sm:max-lg:border-l',
         i > 1 && 'sm:max-lg:border-t',

@@ -66,6 +66,9 @@
   --cf-signal: #ffb524;
   --cf-hairline: rgb(255 255 255 / 0.1);
   --cf-hairline-soft: rgb(255 255 255 / 0.05);
+  /* Horizontals carry less weight than the columns — a square field at equal
+     strength reads as graph paper rather than an array. */
+  --cf-hairline-hair: rgb(255 255 255 / 0.028);
   --cf-nav: rgb(7 8 9 / 0.86);
   --cf-veil-heavy: rgb(7 8 9 / 0.94);
   --cf-veil-mid: rgb(7 8 9 / 0.72);
@@ -103,6 +106,7 @@
   --cf-signal: #1fd286;
   --cf-hairline: rgb(12 22 30 / 0.13);
   --cf-hairline-soft: rgb(12 22 30 / 0.045);
+  --cf-hairline-hair: rgb(12 22 30 / 0.022);
   --cf-nav: rgb(255 255 255 / 0.82);
   --cf-veil-heavy: rgb(255 255 255 / 0.94);
   --cf-veil-mid: rgb(255 255 255 / 0.72);
@@ -147,44 +151,37 @@
     background: var(--cf-surface);
   }
 
-  /* Vertical 12-column guides behind everything */
+  /*
+    Module field.
+
+    A single uniform grid of square cells, one column wide, drawn in CSS across
+    the full document. It replaces the old approach of generating a horizontal
+    rule at every component's top and bottom edge — that put lines wherever a
+    component happened to begin or end, which read as accidental (a stray rule
+    under a link, doubled rules where two sections met).
+
+    Cell size is derived from the same 12-column measure the layout uses, so
+    the field stays square at every viewport and content grids land on it.
+  */
   .cf-guides {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 0;
     display: flex;
     justify-content: center;
+    overflow: hidden;
     pointer-events: none;
   }
   .cf-guides > div {
+    --cf-cell: calc(min(100vw - 64px, 1216px) / 12);
     width: 100%;
     max-width: calc(1280px - 64px);
     margin: 0 32px;
     border-inline: 1px solid var(--cf-hairline-soft);
-    background-image: linear-gradient(to right, var(--cf-hairline-soft) 1px, transparent 1px);
-    background-size: 8.3333% 100%;
-  }
-
-  /* Horizontal rails generated at every [data-rail] boundary */
-  .cf-rails {
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    z-index: 0;
-    display: flex;
-    justify-content: center;
-    pointer-events: none;
-  }
-  .cf-rails > div {
-    position: relative;
-    width: 100%;
-    max-width: calc(1280px - 64px);
-    margin: 0 32px;
-  }
-  .cf-rail {
-    position: absolute;
-    inset-inline: 0;
-    border-top: 1px solid var(--cf-hairline-soft);
+    background-image:
+      linear-gradient(to right, var(--cf-hairline-soft) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--cf-hairline-hair) 1px, transparent 1px);
+    background-size: var(--cf-cell) var(--cf-cell);
   }
 
   /* Gradient-clipped text — background-clip has no utility equivalent */
@@ -254,6 +251,47 @@
   }
   .cf-prose a { color: var(--cf-solar); text-decoration: underline; text-underline-offset: 3px; }
   .cf-prose a:hover { color: var(--cf-solar-deep); }
+
+  /*
+    Text plate.
+
+    The module field is decoration; copy has to win. This lays a soft wash of
+    the page colour behind a text block and feathers it out at the edges, so
+    the grid recedes under the words without a hard box appearing around them.
+    Apply to any block of running text sitting over the field.
+  */
+  .cf-plate {
+    position: relative;
+  }
+  .cf-plate::before {
+    content: "";
+    position: absolute;
+    /* Generous bleed so the falloff happens well clear of any letterform. */
+    inset: -36px -72px;
+    z-index: -1;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--cf-surface) 52%, transparent);
+    /* closest-side sizes the ellipse so its radii land exactly on the element's
+       own edges, which means the gradient reaches full transparency before it
+       can be clipped. Fixed radii (80% 92%) were larger than the half-width, so
+       the fade was still ~38% opaque at the right edge and cut off flat there —
+       a visible vertical line down every hero plate.
+
+       The inner stop stays at 2% so the falloff begins almost at the centre and
+       runs the whole way out. No plateau, so no edge. */
+    -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 2%, transparent 100%);
+    mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 2%, transparent 100%);
+  }
+  /* Text needs its own stacking context so it sits above the filtered layer. */
+  .cf-plate > * {
+    position: relative;
+  }
+  @supports not (backdrop-filter: blur(1px)) {
+    .cf-plate::before {
+      background: color-mix(in srgb, var(--cf-surface) 90%, transparent);
+    }
+  }
 
   /* Diamond marker */
   .cf-mark {

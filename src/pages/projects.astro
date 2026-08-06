@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import HeroCard from '../components/HeroCard.astro';
+import KeyFacts from '../components/KeyFacts.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import Button from '../components/Button.astro';
+import { projects, regions, statuses } from '../data/projects';
+import { facts } from '../data/site';
+
+const keyFacts = [
+  { value: facts.projects, label: 'Projects developed and commissioned since 2006' },
+  { value: '780+ MW', label: 'Commissioned across Canada, the United States and Chile' },
+  { value: '3', label: 'Countries, across dozens of regulatory jurisdictions' },
+  { value: facts.pipeline, label: 'Under advanced development in Canada' },
+];
+
+const trust = [
+  { strong: facts.projects, tail: 'projects delivered' },
+  { strong: '780+ MW', tail: 'commissioned' },
+  { strong: '3', tail: 'countries' },
+  { lead: 'Since', strong: '2006', tail: '' },
+];
+
+const filters = ['All', ...regions, ...statuses];
+---
+
+<BaseLayout
+  title="Projects — CarbonFree Technology"
+  description="CarbonFree has developed, financed, built and commissioned 137 solar projects across Canada, the United States and Chile since 2006."
+  pivot="#daylight"
+  triggerAt={0.8}
+>
+  <Hero
+    eyebrow="Our projects"
+    image="https://carbonfree.com/wp-content/uploads/2014/11/KS.jpg"
+    imageAlt="Kingston Solar, Ontario"
+    trust={trust}
+  >
+    <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
+      Rooftop to utility scale, <span class="cf-gradient-text-dual">across three countries.</span>
+    </h1>
+
+    <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted">
+      Since 2006 CarbonFree has taken {facts.projects} projects from first parcel to commercial
+      operation &mdash; commercial rooftops, parking canopies and ground-mounted utility-scale
+      farms, spanning a wide range of geographies, climates and regulatory jurisdictions.
+    </p>
+
+    <div slot="actions" class="cf-reveal flex flex-wrap items-center gap-5.5">
+      <Button href="#portfolio">Browse the portfolio &rarr;</Button>
+      <Button href="/landowners" variant="ghost">Have land to lease? &rarr;</Button>
+    </div>
+
+    <HeroCard slot="aside" flag="Now in development">
+      <blockquote class="mb-4.5 text-[clamp(21px,2.1vw,27px)] leading-[1.18] font-bold tracking-[-0.02em]">
+        <span class="cf-gradient-text-dual">381 MW</span> awarded in Ontario&rsquo;s 2026 IESO procurement.
+      </blockquote>
+      <p class="text-[14.5px] text-ink-muted">
+        Fort Frances, Kynoch and Rainy River are advancing toward construction in partnership with
+        the Couchiching, Mississauga and Rainy River First Nations &mdash; the largest total award
+        to any single proponent in the round.
+      </p>
+    </HeroCard>
+  </Hero>
+
+  <div id="daylight"><KeyFacts items={keyFacts} /></div>
+
+  <section id="portfolio" class="py-28">
+    <div class="mx-auto w-full max-w-site px-8">
+      <SectionHead
+        eyebrow="The portfolio"
+        title="Every project, by region and stage."
+        body="Filter the list, or scroll the whole thing. Capacities are MW DC unless marked otherwise."
+      />
+
+      <div class="cf-plate cf-reveal mb-9 flex flex-wrap gap-2.5 pl-(--cf-inset)">
+        {filters.map((f) => (
+          <button
+            type="button"
+            data-filter={f}
+            aria-pressed={f === 'All' ? 'true' : 'false'}
+            class="cursor-pointer border border-hairline bg-panel px-4.5 py-2.5 font-din text-[13px] tracking-[0.04em] text-ink-muted uppercase transition duration-200 hover:border-solar hover:text-ink aria-pressed:border-solar aria-pressed:bg-solar/10 aria-pressed:text-ink"
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
+      <p class="cf-reveal mb-6 pl-(--cf-inset) font-din text-[13px] text-ink-muted">
+        Showing <span id="proj-count">{projects.length}</span> of {projects.length} projects
+      </p>
+
+      <div id="proj-grid" class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.map((p) => (
+          <article
+            data-region={p.region}
+            data-status={p.status}
+            class="group relative flex flex-col overflow-hidden border border-hairline bg-panel transition duration-300 hover:-translate-y-1 hover:border-solar/45 hover:shadow-[0_20px_44px_rgb(0_0_0/0.13)]"
+          >
+            <div class="relative h-[200px] overflow-hidden bg-[#0b0d0f]">
+              {p.capacity !== '—' && (
+                <span class="absolute top-4 left-4 z-2 border border-white/15 bg-black/55 px-3 py-1.75 font-din-narrow text-[17px] font-bold text-[#1fd286] backdrop-blur-[6px]">
+                  {p.capacity} {p.unit ?? 'MW'}
+                </span>
+              )}
+              {p.status === 'In development' && (
+                <span class="absolute top-4 right-4 z-2 border border-white/15 bg-black/55 px-2.5 py-1.5 font-din text-[11px] font-bold tracking-[0.12em] text-white uppercase backdrop-blur-[6px]">
+                  In development
+                </span>
+              )}
+              <img
+                src={p.img}
+                alt={p.name}
+                loading="lazy"
+                class="size-full object-cover opacity-92 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
+              />
+              <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 to-transparent to-55%"></div>
+            </div>
+
+            <div class="flex grow flex-col px-6.5 pt-5.5 pb-6.5">
+              <span class="font-din text-xs font-bold tracking-[0.12em] text-solar uppercase">{p.region}</span>
+              <h2 class="mt-2 mb-2.5 text-[19px] font-bold">{p.name}</h2>
+              <div class="mt-auto flex flex-col gap-1 border-t border-hairline pt-3.5 font-din text-[13.5px] text-ink-muted">
+                <span class="text-ink">{p.place}</span>
+                {p.cod && <span>Commercial operation &mdash; {p.cod}</span>}
+                {p.note && <span>{p.note}</span>}
+              </div>
+            </div>
+
+            <span class="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100"></span>
+          </article>
+        ))}
+      </div>
+
+      <p id="proj-empty" hidden class="cf-plate mt-10 pl-(--cf-inset) text-[17px] text-ink-muted">
+        No projects match that filter.
+      </p>
+    </div>
+  </section>
+
+  <ContactCTA
+    title="Want a project like these?"
+    body="Whether you have land that could host one or power you&rsquo;d like to buy from one, the conversation starts the same way."
+    showDoors
+  />
+</BaseLayout>
+
+<script>
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('button[data-filter]')];
+  const cards = [...document.querySelectorAll<HTMLElement>('#proj-grid > article')];
+  const count = document.getElementById('proj-count');
+  const empty = document.getElementById('proj-empty');
+
+  if (buttons.length && cards.length) {
+    const apply = (filter: string) => {
+      let shown = 0;
+      for (const card of cards) {
+        const match =
+          filter === 'All' ||
+          card.dataset.region === filter ||
+          card.dataset.status === filter;
+        card.hidden = !match;
+        if (match) shown++;
+      }
+      if (count) count.textContent = String(shown);
+      if (empty) empty.hidden = shown > 0;
+      for (const b of buttons) {
+        b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+      }
+    };
+
+    for (const b of buttons) {
+      b.addEventListener('click', () => apply(b.dataset.filter ?? 'All'));
+    }
+  }
+</script>

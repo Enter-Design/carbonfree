@@ -2,7 +2,7 @@
 interface Props { items: readonly string[] }
 const { items } = Astro.props;
 ---
-<ul class="mt-2 grid gap-4 pl-(--cf-inset)">
+<ul class="cf-plate mt-2 grid gap-4 pl-(--cf-inset)">
   {items.map((i) => (
     <li class="flex items-start gap-3.5 text-[17px]"><span class="cf-mark mt-2"></span><span set:html={i} /></li>
   ))}

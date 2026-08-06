@@ -7,13 +7,13 @@ export const site = {
 export const nav = [
   { label: 'Lease Your Land', href: '/landowners', emphasis: true },
   { label: 'Buy Clean Power', href: '/clean-power', emphasis: true },
-  { label: 'Track Record', href: '/#projects' },
+  { label: 'Projects', href: '/projects' },
   {
     label: 'About',
     href: '/about',
     children: [
       { label: 'Our Story', href: '/about' },
-      { label: 'Leadership', href: '/about#leadership' },
+      { label: 'Leadership', href: '/leadership' },
     ],
   },
   { label: 'News', href: '/news' },

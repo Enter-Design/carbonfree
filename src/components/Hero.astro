@@ -10,7 +10,6 @@ interface Props {
 const { eyebrow, image, imageAlt, trust = [] } = Astro.props;
 ---
 <section
-  data-rail
   class="relative flex min-h-screen items-center overflow-hidden border-b border-hairline pt-30 pb-20"
 >
   <div class="absolute inset-0 z-0">
@@ -22,7 +21,7 @@ const { eyebrow, image, imageAlt, trust = [] } = Astro.props;
 
   <div class="relative z-2 mx-auto w-full max-w-site px-8">
     <div class="grid items-center gap-8 lg:grid-cols-[1.35fr_0.95fr] lg:gap-18">
-      <div class="max-w-[60ch]">
+      <div class="cf-plate max-w-[60ch]">
         <Eyebrow class="cf-reveal">{eyebrow}</Eyebrow>
         <slot name="headline" />
         <slot name="lede" />
