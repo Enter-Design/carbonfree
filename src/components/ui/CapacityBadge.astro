@@ -1,0 +1,16 @@
+---
+/* Marker that sits over a MediaFrame. Fixed colours, not palette ones. */
+interface Props { position?: 'left' | 'right'; variant?: 'capacity' | 'status' }
+const { position = 'left', variant = 'capacity' } = Astro.props;
+---
+<span
+  class:list={[
+    'absolute top-4 z-2 border border-white/15 bg-black/55 backdrop-blur-[6px]',
+    position === 'left' ? 'left-4' : 'right-4',
+    variant === 'status'
+      ? 'px-2.5 py-1.5 font-din text-[11px] font-bold tracking-[0.12em] text-white uppercase'
+      : 'px-3 py-1.75 font-din-narrow text-[17px] font-bold text-[#1fd286]',
+  ]}
+>
+  <slot />
+</span>

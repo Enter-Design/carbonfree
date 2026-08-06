@@ -1,0 +1,96 @@
+---
+import Hero from '../Hero.astro';
+import HeroCard from '../HeroCard.astro';
+import Button from '../Button.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Action { label: string; href: string; variant?: 'solar' | 'ghost' }
+interface Trust { lead?: string; strong: string; tail?: string }
+interface Card {
+  flag: string;
+  quote?: string;
+  quoteAccent?: string;
+  date?: string;
+  heading?: string;
+  headingAccent?: string;
+  body?: string;
+  link?: { label: string; href: string };
+  footnote?: string;
+  list?: string[];
+}
+
+interface Props {
+  eyebrow: string;
+  headline: string;
+  headlineAccent?: string;
+  lede: string;
+  image: string;
+  imageAlt?: string;
+  actions?: Action[];
+  trust?: Trust[];
+  card?: Card;
+}
+
+const {
+  eyebrow, headline, headlineAccent, lede, image, imageAlt = '',
+  actions = [], trust = [], card,
+} = Astro.props;
+---
+<Hero eyebrow={eyebrow} image={image} imageAlt={imageAlt} trust={trust}>
+  <h1 slot="headline" class="cf-reveal max-w-[19ch] text-display font-bold">
+    <Fragment set:html={headline} />
+    {headlineAccent && <span class="cf-gradient-text-dual"><Fragment set:html={headlineAccent} /></span>}
+  </h1>
+
+  <p slot="lede" class="cf-reveal my-6.5 max-w-[58ch] text-lede text-ink-muted" set:html={lede} />
+
+  {actions.length > 0 && (
+    <div slot="actions" class="cf-reveal flex flex-wrap items-center gap-5.5">
+      {actions.map((a) => (
+        <Button href={a.href} variant={a.variant ?? 'solar'}>
+          <Fragment set:html={a.label} /> &rarr;
+        </Button>
+      ))}
+    </div>
+  )}
+
+  {card && (
+    <HeroCard slot="aside" flag={card.flag}>
+      {card.date && (
+        <div class="mb-2.5 font-din text-[12.5px] tracking-[0.05em] text-ink-muted uppercase">{card.date}</div>
+      )}
+      {card.quote && (
+        <blockquote class="mb-4.5 text-[clamp(21px,2.1vw,27px)] leading-[1.18] font-bold tracking-[-0.02em]">
+          <Fragment set:html={card.quote} />
+          {card.quoteAccent && <span class="cf-gradient-text-dual"><Fragment set:html={card.quoteAccent} /></span>}
+        </blockquote>
+      )}
+      {card.heading && (
+        <h2 class="mb-3 text-xl leading-tight font-bold">
+          <Fragment set:html={card.heading} />
+          {card.headingAccent && <span class="cf-gradient-text-dual"><Fragment set:html={card.headingAccent} /></span>}
+        </h2>
+      )}
+      {card.body && <p class="mb-4 text-[14.5px] text-ink-muted" set:html={card.body} />}
+      {card.list && (
+        <ul class="grid gap-3">
+          {card.list.map((c) => (
+            <li class="flex items-start gap-3 text-[14.5px] text-ink">
+              <span class="mt-1.5 size-2 shrink-0 rotate-45 bg-solar"></span><span set:html={c} />
+            </li>
+          ))}
+        </ul>
+      )}
+      {card.link && <ArrowLink href={card.link.href}>{card.link.label}</ArrowLink>}
+      {card.footnote && (
+        <>
+          <div class="my-4 h-px bg-hairline"></div>
+          <div class="flex items-start gap-3">
+            <span class="mt-1.5 size-2 shrink-0 rotate-45 bg-solar"></span>
+            <p class="text-[13.5px] text-ink-muted" set:html={card.footnote} />
+          </div>
+        </>
+      )}
+    </HeroCard>
+  )}
+</Hero>

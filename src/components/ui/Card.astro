@@ -1,0 +1,35 @@
+---
+/*
+  Bordered panel with the shared hover behaviour: the border warms toward solar
+  and a gradient bar wipes in from the left. `lift` adds the raise and shadow
+  the project cards use.
+*/
+interface Props {
+  as?: 'article' | 'div';
+  lift?: boolean;
+  /** Which edge the gradient bar wipes along. */
+  bar?: 'top' | 'bottom' | 'none';
+  class?: string;
+  [key: string]: unknown;
+}
+/* Rest props are forwarded so callers can attach data-* and aria-* hooks. */
+const { as: Tag = 'div', lift = false, bar = 'bottom', class: className = '', ...rest } = Astro.props;
+---
+<Tag
+  {...rest}
+  class:list={[
+    'group relative overflow-hidden border border-hairline bg-panel transition duration-300 hover:border-solar/45',
+    lift && 'hover:-translate-y-1 hover:shadow-[0_20px_44px_rgb(0_0_0/0.13)]',
+    className,
+  ]}
+>
+  {bar !== 'none' && (
+    <span
+      class:list={[
+        'absolute inset-x-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100',
+        bar === 'top' ? 'top-0' : 'bottom-0',
+      ]}
+    />
+  )}
+  <slot />
+</Tag>

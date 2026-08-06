@@ -1,0 +1,38 @@
+---
+/*
+  Photograph on a fixed dark plate.
+
+  Deliberately palette-independent: tying the scrim to the --cf-veil-* tokens
+  washed images out in daylight. A fixed dark backing keeps them rich at both
+  ends of the sunrise, which is what lets each page keep a single transition.
+*/
+interface Props {
+  src: string;
+  alt?: string;
+  /** Height utility, e.g. "h-[230px]" or "aspect-[4/3] lg:aspect-auto lg:h-[240px]". */
+  size?: string;
+  eager?: boolean;
+  /** Adds scale-on-hover. Requires a `group` ancestor. */
+  zoom?: boolean;
+  imgAttrs?: Record<string, string>;
+  class?: string;
+}
+const {
+  src, alt = '', size = 'h-[230px]', eager = false, zoom = false,
+  imgAttrs = {}, class: className = '',
+} = Astro.props;
+---
+<div class:list={['relative overflow-hidden bg-[#0b0d0f]', size, className]}>
+  <slot name="badge" />
+  <img
+    src={src}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    {...imgAttrs}
+    class:list={[
+      'size-full object-cover opacity-92 transition duration-500',
+      zoom && 'group-hover:scale-105 group-hover:opacity-100',
+    ]}
+  />
+  <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 to-transparent to-55%"></div>
+</div>

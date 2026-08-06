@@ -1,0 +1,187 @@
+---
+import Section from './blocks/Section.astro';
+import HeroBlock from './blocks/HeroBlock.astro';
+import SplitBlock from './blocks/SplitBlock.astro';
+
+import Doors from './Doors.astro';
+import StatBar from './StatBar.astro';
+import KeyFacts from './KeyFacts.astro';
+import NumberedGrid from './NumberedGrid.astro';
+import Callout from './Callout.astro';
+import RegionChips from './RegionChips.astro';
+import ProjectGrid from './ProjectGrid.astro';
+import PartnerStrip from './PartnerStrip.astro';
+import NewsGrid from './NewsGrid.astro';
+import Steps from './Steps.astro';
+import Compare from './Compare.astro';
+import FitList from './FitList.astro';
+import Faq from './Faq.astro';
+import Timeline from './Timeline.astro';
+import ContactCTA from './ContactCTA.astro';
+import ArrowLink from './ArrowLink.astro';
+import Card from './ui/Card.astro';
+import { leadership } from '../data/leadership';
+import { services, regions as regionList } from '../data/home';
+import { values } from '../data/about';
+import * as land from '../data/landowners';
+import * as power from '../data/cleanpower';
+
+/*
+  Long or repeated lists stay in data modules — a forty-row table is miserable
+  to maintain in YAML. Frontmatter names one with `source:` instead of inlining
+  `items:`. Short, page-specific lists can still be written inline.
+*/
+const SOURCES: Record<string, readonly any[]> = {
+  services,
+  values,
+  'land.keyFacts': land.keyFacts,
+  'land.benefits': land.benefits,
+  'land.criteria': land.criteria,
+  'land.steps': land.steps,
+  'land.expectations': land.expectations,
+  'land.faq': land.faq,
+  'power.keyFacts': power.keyFacts,
+  'power.benefits': power.benefits,
+  'power.steps': power.steps,
+  'power.fit': power.fit,
+  'power.expectations': power.expectations,
+  'power.faq': power.faq,
+};
+
+const items = (p: Record<string, any>) => (p.source ? SOURCES[p.source] : p.items) ?? [];
+
+/*
+  Block renderer.
+
+  Frontmatter lists blocks in order; this walks that list and hands each one to
+  its component. To add a block type, write the component and add a case below —
+  nothing else needs to change.
+*/
+interface Props {
+  blocks: Record<string, any>[];
+  /** Extra data a block may need that can't live in frontmatter, e.g. news posts. */
+  context?: Record<string, any>;
+}
+const { blocks, context = {} } = Astro.props;
+---
+{blocks.map((b) => {
+  const { type, ...p } = b;
+
+  if (type === 'hero') return <HeroBlock {...(p as any)} />;
+  if (type === 'split') return <SplitBlock {...(p as any)} />;
+  if (type === 'stats') return <div id={p.id}><StatBar /></div>;
+  if (type === 'keyFacts') return <div id={p.id}><KeyFacts items={items(p)} /></div>;
+  if (type === 'doors') return <Doors />;
+  if (type === 'timeline') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <Timeline />
+      </Section>
+    );
+  }
+
+  if (type === 'numbered') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <NumberedGrid items={items(p)} />
+        {p.callout && <Callout title={p.callout.title}><Fragment set:html={p.callout.body} /></Callout>}
+        {p.regions && <RegionChips items={p.regions === true ? regionList : p.regions} />}
+      </Section>
+    );
+  }
+
+  if (type === 'steps') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <Steps items={items(p)} />
+      </Section>
+    );
+  }
+
+  if (type === 'compare') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <Compare headA={p.headA ?? power.compare.headA} headB={p.headB ?? power.compare.headB} rows={p.rows ?? power.compare.rows} />
+        {p.footnote && (
+          <p class="cf-reveal mt-6.5 max-w-[70ch] pl-(--cf-inset) text-[15px] text-ink-muted" set:html={p.footnote} />
+        )}
+      </Section>
+    );
+  }
+
+  if (type === 'list') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <FitList items={items(p)} />
+      </Section>
+    );
+  }
+
+  if (type === 'faq') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <Faq items={items(p)} />
+      </Section>
+    );
+  }
+
+  if (type === 'projects') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <ProjectGrid />
+        {p.link && <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href={p.link.href}>{p.link.label}</ArrowLink></div>}
+      </Section>
+    );
+  }
+
+  if (type === 'partners') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <PartnerStrip />
+      </Section>
+    );
+  }
+
+  if (type === 'news') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <NewsGrid posts={context.posts ?? []} />
+        {p.link && <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href={p.link.href}>{p.link.label}</ArrowLink></div>}
+      </Section>
+    );
+  }
+
+  if (type === 'leadership') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <div class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {leadership.map((person) => (
+            <Card bar="top" class="cell-inset pt-7 pb-7.5">
+              <div class="text-[17px] font-bold">{person.name}</div>
+              <div class="mt-1.5 font-din text-[13.5px] text-ink-muted">{person.role}</div>
+            </Card>
+          ))}
+        </div>
+        {p.link && <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href={p.link.href}>{p.link.label}</ArrowLink></div>}
+      </Section>
+    );
+  }
+
+  if (type === 'contact') {
+    return (
+      <div id={p.id}>
+        <ContactCTA
+          eyebrow={p.eyebrow}
+          title={p.title}
+          body={p.body}
+          submit={p.submit}
+          note={p.note}
+          showDoors={p.showDoors}
+          fields={p.fields}
+        />
+      </div>
+    );
+  }
+
+  return null;
+})}

@@ -5,6 +5,7 @@ import Eyebrow from '../../components/Eyebrow.astro';
 import ArrowLink from '../../components/ArrowLink.astro';
 import Button from '../../components/Button.astro';
 import NewsCard from '../../components/NewsCard.astro';
+import { formatDate } from '../../lib/date';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news', ({ data }) => !data.draft);
@@ -19,7 +20,7 @@ export async function getStaticPaths() {
 const { post, related } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
-const stamp = d.dateLabel ?? d.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+const stamp = d.dateLabel ?? formatDate(d.date, true);
 const isPlaceholder = (v: string) => v.trim().startsWith('[');
 
 /* The sunrise pivots on whatever section follows the hero, so the full-screen

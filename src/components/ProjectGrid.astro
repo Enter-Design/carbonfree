@@ -1,43 +1,16 @@
 ---
+import ProjectCard from './ui/ProjectCard.astro';
 import { projects } from '../data/home';
 ---
-{/*
-  Cards sit apart rather than sharing edges. A flush grid of hairline-divided
-  cells made six projects read as one block of table rows; separating them and
-  giving each a solid panel plus a lift on hover makes each project register as
-  its own thing.
-*/}
 <div class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
   {projects.map((p) => (
-    <article class="group relative flex flex-col overflow-hidden border border-hairline bg-panel transition duration-300 hover:-translate-y-1 hover:border-solar/45 hover:shadow-[0_20px_44px_rgb(0_0_0/0.13)]">
-      {/*
-        Photo plate is deliberately palette-independent. Tying it to the veil
-        tokens meant a near-white scrim washed the images out in daylight.
-      */}
-      <div class="relative h-[230px] overflow-hidden bg-[#0b0d0f]">
-        {'capacity' in p && p.capacity && (
-          <span class="absolute top-4 left-4 z-2 border border-white/15 bg-black/55 px-3 py-1.75 font-din-narrow text-[17px] font-bold text-[#1fd286] backdrop-blur-[6px]">
-            {p.capacity}
-          </span>
-        )}
-        <img
-          src={p.img}
-          alt={p.name}
-          class="size-full object-cover opacity-92 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
-        />
-        <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 to-transparent to-55%"></div>
-      </div>
-
-      <div class="flex grow flex-col px-6.5 pt-5.5 pb-6.5">
-        <span class="font-din text-xs font-bold tracking-[0.12em] text-solar uppercase">{p.tag}</span>
-        <h3 class="mt-2 mb-2.5 text-[19px] font-bold">{p.name}</h3>
-        <div class="mt-auto flex flex-col gap-1 border-t border-hairline pt-3.5 font-din text-[13.5px] text-ink-muted">
-          <span class="text-ink">{p.place}</span>
-          <span>{p.note}</span>
-        </div>
-      </div>
-
-      <span class="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100"></span>
-    </article>
+    <ProjectCard
+      name={p.name}
+      img={p.img}
+      tag={p.tag}
+      place={p.place}
+      note={p.note}
+      capacity={'capacity' in p ? p.capacity : undefined}
+    />
   ))}
 </div>

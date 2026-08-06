@@ -60,7 +60,7 @@ const labelBase = 'mb-2 block font-din text-[13px] font-bold tracking-[0.04em] t
       <div class="cf-reveal flex flex-col justify-center px-8 pt-18 pb-6 lg:py-24 lg:pr-16 lg:edge-gutter-l">
         <Eyebrow>{eyebrow}</Eyebrow>
         <h2 class="mt-4.5 mb-5 max-w-[18ch] text-headline font-bold" set:html={title} />
-        <p class="max-w-[46ch] text-lg text-ink-muted">{body}</p>
+        <p class="max-w-[46ch] text-lg text-ink-muted" set:html={body} />
         {showDoors && (
           <div class="mt-7.5 flex flex-wrap gap-4">
             <a href="/landowners" class="inline-flex items-center gap-2.5 border border-transparent bg-linear-[135deg,var(--cf-solar),var(--cf-solar-deep)] px-[30px] py-[15px] text-[15px] font-bold text-[#1a1205] transition duration-200 hover:-translate-y-0.5">I have land to lease &rarr;</a>

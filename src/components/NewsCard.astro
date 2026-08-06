@@ -1,6 +1,7 @@
 ---
 import ArrowLink from './ArrowLink.astro';
 import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../lib/date';
 
 interface Props {
   post: CollectionEntry<'news'>;
@@ -8,7 +9,7 @@ interface Props {
 }
 const { post, first = false } = Astro.props;
 const { title, dek, date, dateLabel, category } = post.data;
-const stamp = dateLabel ?? date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long' });
+const stamp = dateLabel ?? formatDate(date);
 ---
 <article
   class:list={[

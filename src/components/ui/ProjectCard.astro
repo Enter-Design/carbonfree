@@ -1,0 +1,46 @@
+---
+import Card from './Card.astro';
+import MediaFrame from './MediaFrame.astro';
+import CapacityBadge from './CapacityBadge.astro';
+
+/* One project. Shared by the homepage grid and the projects explorer. */
+interface Props {
+  name: string;
+  img: string;
+  tag: string;
+  place: string;
+  note?: string;
+  capacity?: string;
+  unit?: string;
+  status?: string;
+  cod?: string;
+  eager?: boolean;
+  mediaSize?: string;
+  attrs?: Record<string, string>;
+}
+const {
+  name, img, tag, place, note, capacity, unit = 'MW', status, cod,
+  eager = false, mediaSize = 'h-[230px]', attrs = {},
+} = Astro.props;
+const showCapacity = capacity && capacity !== '—';
+---
+<Card as="article" lift class="flex flex-col" {...attrs}>
+  <MediaFrame src={img} alt={name} size={mediaSize} eager={eager} zoom>
+    <Fragment slot="badge">
+      {showCapacity && <CapacityBadge>{capacity} {unit}</CapacityBadge>}
+      {status === 'In development' && (
+        <CapacityBadge position="right" variant="status">In development</CapacityBadge>
+      )}
+    </Fragment>
+  </MediaFrame>
+
+  <div class="flex grow flex-col px-6.5 pt-5.5 pb-6.5">
+    <span class="font-din text-xs font-bold tracking-[0.12em] text-solar uppercase">{tag}</span>
+    <h3 class="mt-2 mb-2.5 text-[19px] font-bold">{name}</h3>
+    <div class="mt-auto flex flex-col gap-1 border-t border-hairline pt-3.5 font-din text-[13.5px] text-ink-muted">
+      <span class="text-ink">{place}</span>
+      {cod && <span>Commercial operation &mdash; {cod}</span>}
+      {note && <span>{note}</span>}
+    </div>
+  </div>
+</Card>

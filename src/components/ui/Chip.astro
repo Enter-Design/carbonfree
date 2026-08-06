@@ -1,0 +1,23 @@
+---
+/* Small bordered label. Opaque, so the background field can't read through. */
+interface Props {
+  as?: 'span' | 'a' | 'button';
+  href?: string;
+  interactive?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+/* Rest props are forwarded so callers can attach data-* and aria-* hooks. */
+const { as: Tag = 'span', href, interactive = false, class: className = '', ...rest } = Astro.props;
+---
+<Tag
+  href={href}
+  {...rest}
+  class:list={[
+    'inline-flex items-center gap-2.5 border border-hairline bg-panel px-3.25 py-1.75 font-din text-[12.5px] tracking-[0.06em] text-ink uppercase',
+    interactive && 'cursor-pointer transition duration-200 hover:border-solar hover:text-solar',
+    className,
+  ]}
+>
+  <slot />
+</Tag>

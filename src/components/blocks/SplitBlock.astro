@@ -1,0 +1,43 @@
+---
+import Split from '../Split.astro';
+import Eyebrow from '../Eyebrow.astro';
+import FitList from '../FitList.astro';
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  id?: string;
+  image: string;
+  imageAlt?: string;
+  reverse?: boolean;
+  badgeValue?: string;
+  badgeLabel?: string;
+  eyebrow: string;
+  title: string;
+  body?: string;
+  list?: string[];
+  bullets?: string[];
+  footnote?: string;
+  link?: { label: string; href: string };
+}
+const {
+  id, image, imageAlt = '', reverse = false, badgeValue, badgeLabel,
+  eyebrow, title, body, list = [], bullets = [], footnote, link,
+} = Astro.props;
+---
+<section id={id}>
+  <Split image={image} imageAlt={imageAlt} reverse={reverse} badgeValue={badgeValue} badgeLabel={badgeLabel}>
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <h2 class="mt-4.5 mb-5.5 text-headline font-bold" set:html={title} />
+    {body && <p class="mb-4.5 text-[17px] text-ink-muted" set:html={body} />}
+    {list.length > 0 && <FitList items={list} />}
+    {bullets.length > 0 && (
+      <ul class="mt-5.5 grid gap-4">
+        {bullets.map((b) => (
+          <li class="flex items-start gap-3.5 text-base"><span class="cf-mark mt-1.75"></span><span set:html={b} /></li>
+        ))}
+      </ul>
+    )}
+    {footnote && <p class="mt-6.5 text-[15px] text-ink-muted" set:html={footnote} />}
+    {link && <div class="mt-6.5"><ArrowLink href={link.href}>{link.label}</ArrowLink></div>}
+  </Split>
+</section>

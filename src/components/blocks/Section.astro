@@ -1,0 +1,25 @@
+---
+import SectionHead from '../SectionHead.astro';
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  /** Tailwind padding override, e.g. "pb-28" for a section that follows another. */
+  spacing?: string;
+  /** Render without the centred container, for full-bleed blocks. */
+  bleed?: boolean;
+}
+const { id, eyebrow, title, body, spacing = 'py-28', bleed = false } = Astro.props;
+---
+<section id={id} class={spacing}>
+  {bleed ? (
+    <slot />
+  ) : (
+    <div class="mx-auto w-full max-w-site px-8">
+      {(eyebrow || title) && <SectionHead eyebrow={eyebrow ?? ''} title={title ?? ''} body={body} />}
+      <slot />
+    </div>
+  )}
+</section>

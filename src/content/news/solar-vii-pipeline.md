@@ -1,6 +1,7 @@
 ---
 title: Solar VII and storage pipeline grows past one gigawatt
 dek: A second utility-scale portfolio in Ontario, two British Columbia projects for the 2027 procurement, and a BESS project under development in Chile.
+# PLACEHOLDER DATE — invented when this stub was written. Replace with the real one.
 date: 2026-02-04
 kicker: News · Pipeline
 category: Company

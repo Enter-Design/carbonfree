@@ -2,83 +2,122 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Eyebrow from '../../components/Eyebrow.astro';
-import ArrowLink from '../../components/ArrowLink.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
+import MediaFrame from '../../components/ui/MediaFrame.astro';
+import { formatDate } from '../../lib/date';
 
 const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const [lead, ...rest] = posts;
-const stamp = (p: (typeof posts)[number]) =>
-  p.data.dateLabel ?? p.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long' });
+const stamp = (p: (typeof posts)[number]) => p.data.dateLabel ?? formatDate(p.data.date);
 ---
 
 <BaseLayout
   title="News — CarbonFree Technology"
   description="Announcements, project updates and press releases from CarbonFree Technology."
-  pivot="#daylight"
+  pivot="#lead"
+  triggerAt={0.9}
 >
-  <section class="border-b border-hairline pt-44 pb-20">
-    <div class="cf-plate mx-auto w-full max-w-site px-8">
-      <Eyebrow class="cf-reveal">Newsroom</Eyebrow>
-      <h1 class="cf-reveal mt-5 max-w-[18ch] text-display font-bold">
-        What we&rsquo;re <span class="cf-gradient-text">building, and where.</span>
-      </h1>
-      <p class="cf-reveal mt-6 max-w-[58ch] text-lede text-ink-muted">
-        Announcements, project updates and press releases. For media enquiries, contact
-        Emma Coyle at <a href="mailto:emma@carbonfree.com" class="text-solar underline underline-offset-4">emma@carbonfree.com</a>.
-      </p>
+  <!-- MASTHEAD -->
+  <section class="border-b border-hairline pt-34 pb-9">
+    <div class="mx-auto w-full max-w-site px-8">
+      <div class="cf-plate flex flex-wrap items-end justify-between gap-x-10 gap-y-4 pl-(--cf-inset)">
+        <div>
+          <Eyebrow class="cf-reveal">What we're building and where</Eyebrow>
+          <h1 class="cf-reveal mt-3 text-[clamp(34px,4.4vw,54px)] font-bold">Newsroom</h1>
+        </div>
+        <p class="cf-reveal max-w-[36ch] text-[15px] text-ink-muted">
+          Announcements, project updates and press releases. Media enquiries to Emma Coyle,
+          <a href="mailto:emma@carbonfree.com" class="text-solar underline underline-offset-4">emma@carbonfree.com</a>.
+        </p>
+      </div>
     </div>
   </section>
 
+  <!-- LEAD STORY -->
   {lead && (
-    <section id="daylight" class="border-b border-hairline">
+    <section id="lead" class="border-b border-hairline">
       <div class="mx-auto w-full max-w-site px-8">
-        <a href={`/news/${lead.id}`} class="group grid gap-0 py-0 lg:grid-cols-[1.1fr_0.9fr]">
-          <div class="cf-reveal relative min-h-[300px] overflow-hidden lg:min-h-[440px]">
-            <img
-              src={lead.data.image}
-              alt={lead.data.imageAlt}
-              class="absolute inset-0 size-full object-cover opacity-80 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100"
-            />
-          </div>
-          <div class="cf-plate cf-reveal flex flex-col justify-center border-hairline cell-inset py-12 max-lg:border-t lg:border-l lg:py-16 lg:pl-14">
-            <div class="mb-4 flex flex-wrap items-center gap-x-3 font-din text-[12.5px] tracking-[0.1em] uppercase">
+        {/*
+          One anchor only. Wrapping the whole card in an <a> and putting another
+          <a> inside it is invalid, and the HTML parser recovers by closing the
+          outer anchor early — which reparents the copy and breaks the grid.
+          The title carries the link and stretches over the card instead.
+        */}
+        <div class="group relative grid items-stretch lg:grid-cols-[1.15fr_1fr]">
+          <MediaFrame
+            src={lead.data.image}
+            alt={lead.data.imageAlt}
+            size="h-[260px] lg:h-[400px]"
+            eager
+            zoom
+            class="border-r border-hairline max-lg:border-r-0"
+          />
+          <div class="cf-plate flex flex-col justify-center py-9 lg:py-10 lg:pl-12">
+            <div class="mb-4 flex flex-wrap items-center gap-x-3 font-din text-[12px] tracking-[0.12em] uppercase">
               <span class="text-solar">{stamp(lead)}</span>
+              <span class="text-ink-muted/60">&middot;</span>
               <span class="text-ink-muted">{lead.data.category}</span>
             </div>
-            <h2 class="mb-5 max-w-[22ch] text-headline font-bold transition duration-200 group-hover:text-solar">
-              {lead.data.title}
+            <h2 class="mb-4 max-w-[20ch] text-[clamp(26px,2.9vw,40px)] leading-[1.08] font-bold">
+              <a
+                href={`/news/${lead.id}`}
+                class="transition duration-200 group-hover:text-solar after:absolute after:inset-0 after:content-['']"
+              >
+                {lead.data.title}
+              </a>
             </h2>
-            <p class="mb-7 max-w-[52ch] text-[17px] text-ink-muted">{lead.data.dek}</p>
-            <ArrowLink href={`/news/${lead.id}`}>Read the announcement</ArrowLink>
+            <p class="mb-6 max-w-[50ch] text-[16.5px] text-ink-muted">{lead.data.dek}</p>
+            <span class="inline-flex items-center gap-2 text-[15px] font-bold text-solar transition-all duration-200 group-hover:gap-3 group-hover:text-solar-deep">
+              Read the story <span aria-hidden="true">&rarr;</span>
+            </span>
           </div>
-        </a>
+        </div>
       </div>
     </section>
   )}
 
+  <!-- THE WIRE -->
   {rest.length > 0 && (
-    <section class="py-24">
+    <section class="pt-12 pb-24">
       <div class="mx-auto w-full max-w-site px-8">
-        <Eyebrow class="cf-reveal mb-9 pl-(--cf-inset)">Earlier</Eyebrow>
-        <div class="cf-reveal grid border-t border-hairline">
+        <div class="cf-plate mb-2 flex items-baseline justify-between pl-(--cf-inset)">
+          <Eyebrow>More from CarbonFree</Eyebrow>
+          <span class="font-din text-[12px] tracking-[0.1em] text-ink-muted/70 uppercase">
+            {posts.length} {posts.length === 1 ? 'story' : 'stories'}
+          </span>
+        </div>
+
+        <div class="border-t border-hairline">
           {rest.map((post) => (
             <a
               href={`/news/${post.id}`}
-              class="cf-plate group grid items-start gap-x-10 gap-y-3 border-b border-hairline cell-inset py-8 transition duration-300 lg:grid-cols-[200px_1fr_auto]"
+              class="group grid items-center gap-x-7 border-b border-hairline py-5 transition duration-200 hover:bg-white/[0.02] lg:grid-cols-[150px_170px_1fr_auto]"
             >
-              <div class="flex flex-wrap items-center gap-x-3 font-din text-[12.5px] tracking-[0.1em] uppercase">
+              <MediaFrame
+                src={post.data.image}
+                alt=""
+                size="h-[86px] w-[150px] border border-hairline max-lg:w-full"
+                zoom
+              />
+
+              <div class="flex flex-col gap-1 font-din text-[11.5px] tracking-[0.1em] uppercase">
                 <span class="text-solar">{stamp(post)}</span>
-                <span class="text-ink-muted">{post.data.category}</span>
+                <span class="text-ink-muted/70">{post.data.category}</span>
               </div>
-              <div>
-                <h3 class="mb-2 max-w-[46ch] text-xl font-bold transition duration-200 group-hover:text-solar">
+
+              <div class="min-w-0">
+                <h3 class="mb-1.5 max-w-[52ch] text-[19px] leading-snug font-bold transition duration-200 group-hover:text-solar">
                   {post.data.title}
                 </h3>
-                <p class="max-w-[62ch] text-[15px] text-ink-muted">{post.data.dek}</p>
+                <p class="max-w-[68ch] text-[14.5px] text-ink-muted">{post.data.dek}</p>
               </div>
-              <span class="self-center font-bold text-solar transition-all duration-200 group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+
+              <span
+                class="hidden self-center text-solar transition-transform duration-200 group-hover:translate-x-1 lg:block"
+                aria-hidden="true"
+              >&rarr;</span>
             </a>
           ))}
         </div>
@@ -88,6 +127,6 @@ const stamp = (p: (typeof posts)[number]) =>
 
   <ContactCTA
     title="Talk to us."
-    body="Media enquiries, partnership questions, or anything else — we&rsquo;d like to hear from you."
+    body="Media enquiries, partnership questions, or anything else &mdash; we&rsquo;d like to hear from you."
   />
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 title: First Nations partnerships advance across Ontario
 dek: Projects developed with the Couchiching, Mississauga and Rainy River First Nations move toward construction and operation.
+# PLACEHOLDER DATE — invented when this stub was written. Replace with the real one.
 date: 2026-03-18
 kicker: News · Ontario
 category: Project update

@@ -2,7 +2,6 @@
 title: CarbonFree and Fengate awarded three solar contracts totalling 381 MW in Ontario IESO procurement
 dek: Fort Frances, Kynoch and Rainy River will advance toward construction in partnership with the Couchiching, Mississauga and Rainy River First Nations.
 date: 2026-04-09
-dateLabel: "[Date]"
 kicker: News · Ontario
 category: Press release
 image: https://carbonfree.com/wp-content/uploads/2014/11/GRS1.jpg
@@ -41,20 +40,13 @@ contacts:
     org: CarbonFree Technology Inc.
     address: 1 St Clair Ave West, Suite 801, Toronto ON M4V 1K6
     email: emma@carbonfree.com
-  - name: "[Fengate contact]"
-    org: Fengate Asset Management
-    note: Name, title and email to be supplied.
 ---
 
 
-Toronto, Ontario — <span class="cf-todo">[Date]</span> — CarbonFree Technology Inc. (“CarbonFree”), in partnership with Fengate Asset Management (“Fengate”), is pleased to announce that it has been awarded three solar energy long-term supply contracts totalling 381 MW in the Independent Electricity System Operator (“IESO”) Long-Term 2 Energy Supply (Window 1) Request for Proposals (LT2(e1) RFP).
+Toronto, Ontario — April 9, 2026 — CarbonFree Technology Inc. (“CarbonFree”), in partnership with Fengate Asset Management (“Fengate”), is pleased to announce that it has been awarded three solar energy long-term supply contracts totalling 381 MW in the Independent Electricity System Operator (“IESO”) Long-Term 2 Energy Supply (Window 1) Request for Proposals (LT2(e1) RFP).
 
 This result represents the largest total contract capacity awarded to a single proponent in this procurement round, and reflects the success of CarbonFree’s long-standing development platform, Fengate’s experience investing in renewable energy infrastructure across North America, and the strong support of our First Nations partners.
 
 ## About CarbonFree
 
 CarbonFree Technology Inc. is a 100% Canadian-owned, Ontario-based renewable energy developer with over 20 years of experience developing utility-scale solar and energy infrastructure projects across North America and internationally. [www.carbonfree.com](https://carbonfree.com)
-
-## About Fengate Asset Management
-
-<span class="cf-todo">[Fengate to complete]</span>

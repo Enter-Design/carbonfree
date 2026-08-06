@@ -213,7 +213,7 @@
     .cf-reveal { opacity: 1; transform: none; transition: none; }
   }
 
-  /* Unresolved copy in a draft release — [Date], [Fengate to complete] */
+  /* Marks copy that is still unresolved, e.g. a value awaiting sign-off. */
   .cf-todo {
     display: inline-block;
     border: 1px dashed var(--cf-solar);
@@ -251,6 +251,67 @@
   }
   .cf-prose a { color: var(--cf-solar); text-decoration: underline; text-underline-offset: 3px; }
   .cf-prose a:hover { color: var(--cf-solar-deep); }
+  .cf-prose > h3 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 40px 0 14px;
+  }
+  .cf-prose strong { color: var(--cf-ink); font-weight: 700; }
+  .cf-prose em { font-style: italic; }
+  .cf-prose > ul,
+  .cf-prose > ol {
+    color: var(--cf-ink-muted);
+    font-size: 17.5px;
+    margin: 0 0 24px;
+    padding-left: 1.2em;
+    display: grid;
+    gap: 10px;
+  }
+  .cf-prose > ul { list-style: none; padding-left: 0; }
+  .cf-prose > ul > li { position: relative; padding-left: 26px; }
+  .cf-prose > ul > li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0.62em;
+    width: 8px;
+    height: 8px;
+    background: var(--cf-signal);
+    transform: rotate(45deg);
+  }
+  .cf-prose > ol { list-style: decimal; }
+  .cf-prose > ol > li::marker { color: var(--cf-solar); font-weight: 700; }
+  .cf-prose > hr {
+    border: 0;
+    border-top: 1px solid var(--cf-hairline);
+    margin: 44px 0;
+  }
+  .cf-prose table {
+    width: 100%;
+    border: 1px solid var(--cf-hairline);
+    border-collapse: collapse;
+    background: var(--cf-panel);
+    margin: 0 0 28px;
+  }
+  .cf-prose thead th {
+    background: var(--cf-surface-alt);
+    font-family: var(--font-din);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: left;
+  }
+  .cf-prose th,
+  .cf-prose td {
+    border-top: 1px solid var(--cf-hairline);
+    padding: 14px 20px;
+    font-size: 15.5px;
+    color: var(--cf-ink-muted);
+  }
+  .cf-prose thead th { border-top: 0; color: var(--cf-ink); }
+  .cf-prose tbody td:first-child { color: var(--cf-ink); font-weight: 600; }
 
   /*
     Text plate.

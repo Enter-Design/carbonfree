@@ -94,7 +94,7 @@ export const expectations = [
 export const faq = [
   {
     q: 'What exactly am I buying?',
-    a: 'A long-term contract for a portion of the output of a CarbonFree solar project, at a price agreed up front, together with the clean energy credits associated with that generation. The instrument is a corporate power purchase agreement — a corporate PPA.',
+    a: 'A long-term contract for a portion of the output of a CarbonFree solar project, at a price agreed up front, together with the clean energy credits associated with that generation. The instrument is a corporate power purchase agreement — a corporate PPA. Our guide to <a href="/news/ontario-corporate-ppa-rules">Ontario’s corporate PPA rules</a> explains the framework in full.',
   },
   {
     q: 'Do we need to install solar panels at our facility?',
@@ -106,7 +106,7 @@ export const faq = [
   },
   {
     q: 'How can this reduce Global Adjustment exposure?',
-    a: 'For eligible Class A customers, electricity generated during Ontario’s peak demand hours may reduce the customer’s peak demand factor, which is used to calculate future Global Adjustment charges. Whether and how much it applies depends on your facility, so it forms part of the assessment.',
+    a: 'For eligible Class A customers, electricity generated during Ontario’s peak demand hours may reduce the customer’s peak demand factor, which is used to calculate future Global Adjustment charges. Whether and how much it applies depends on your facility, so it forms part of the assessment — we cover the mechanism, and the coincidence problem behind it, in our <a href="/news/ontario-corporate-ppa-rules">guide to the rules</a>.',
   },
   {
     q: 'Is this only for Class A customers?',

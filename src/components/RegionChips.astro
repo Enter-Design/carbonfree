@@ -1,11 +1,13 @@
 ---
+import Chip from './ui/Chip.astro';
+
 interface Props { items: readonly string[] }
 const { items } = Astro.props;
 ---
 <div class="cf-reveal mt-6.5 flex flex-wrap gap-3 pl-(--cf-inset)">
   {items.map((r) => (
-    <span class="inline-flex items-center gap-2.5 border border-hairline bg-panel px-4 py-2.5 font-din text-[13px] tracking-[0.04em] text-ink">
+    <Chip class="!tracking-[0.04em] !normal-case !text-[13px]">
       <span class="size-1.75 rotate-45 bg-signal"></span>{r}
-    </span>
+    </Chip>
   ))}
 </div>

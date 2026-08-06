@@ -6,6 +6,8 @@ import KeyFacts from '../components/KeyFacts.astro';
 import SectionHead from '../components/SectionHead.astro';
 import ContactCTA from '../components/ContactCTA.astro';
 import Button from '../components/Button.astro';
+import ProjectCard from '../components/ui/ProjectCard.astro';
+import Chip from '../components/ui/Chip.astro';
 import { projects, regions, statuses } from '../data/projects';
 import { facts } from '../data/site';
 
@@ -77,14 +79,15 @@ const filters = ['All', ...regions, ...statuses];
 
       <div class="cf-plate cf-reveal mb-9 flex flex-wrap gap-2.5 pl-(--cf-inset)">
         {filters.map((f) => (
-          <button
-            type="button"
+          <Chip
+            as="button"
+            interactive
+            class="!px-4.5 !py-2.5 !text-[13px] !tracking-[0.04em] !text-ink-muted aria-pressed:!border-solar aria-pressed:bg-solar/10 aria-pressed:!text-ink"
             data-filter={f}
             aria-pressed={f === 'All' ? 'true' : 'false'}
-            class="cursor-pointer border border-hairline bg-panel px-4.5 py-2.5 font-din text-[13px] tracking-[0.04em] text-ink-muted uppercase transition duration-200 hover:border-solar hover:text-ink aria-pressed:border-solar aria-pressed:bg-solar/10 aria-pressed:text-ink"
           >
             {f}
-          </button>
+          </Chip>
         ))}
       </div>
 
@@ -94,43 +97,19 @@ const filters = ['All', ...regions, ...statuses];
 
       <div id="proj-grid" class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((p) => (
-          <article
-            data-region={p.region}
-            data-status={p.status}
-            class="group relative flex flex-col overflow-hidden border border-hairline bg-panel transition duration-300 hover:-translate-y-1 hover:border-solar/45 hover:shadow-[0_20px_44px_rgb(0_0_0/0.13)]"
-          >
-            <div class="relative h-[200px] overflow-hidden bg-[#0b0d0f]">
-              {p.capacity !== '—' && (
-                <span class="absolute top-4 left-4 z-2 border border-white/15 bg-black/55 px-3 py-1.75 font-din-narrow text-[17px] font-bold text-[#1fd286] backdrop-blur-[6px]">
-                  {p.capacity} {p.unit ?? 'MW'}
-                </span>
-              )}
-              {p.status === 'In development' && (
-                <span class="absolute top-4 right-4 z-2 border border-white/15 bg-black/55 px-2.5 py-1.5 font-din text-[11px] font-bold tracking-[0.12em] text-white uppercase backdrop-blur-[6px]">
-                  In development
-                </span>
-              )}
-              <img
-                src={p.img}
-                alt={p.name}
-                loading="lazy"
-                class="size-full object-cover opacity-92 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
-              />
-              <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 to-transparent to-55%"></div>
-            </div>
-
-            <div class="flex grow flex-col px-6.5 pt-5.5 pb-6.5">
-              <span class="font-din text-xs font-bold tracking-[0.12em] text-solar uppercase">{p.region}</span>
-              <h2 class="mt-2 mb-2.5 text-[19px] font-bold">{p.name}</h2>
-              <div class="mt-auto flex flex-col gap-1 border-t border-hairline pt-3.5 font-din text-[13.5px] text-ink-muted">
-                <span class="text-ink">{p.place}</span>
-                {p.cod && <span>Commercial operation &mdash; {p.cod}</span>}
-                {p.note && <span>{p.note}</span>}
-              </div>
-            </div>
-
-            <span class="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-linear-to-r from-solar to-solar-deep transition-transform duration-300 group-hover:scale-x-100"></span>
-          </article>
+          <ProjectCard
+            name={p.name}
+            img={p.img}
+            tag={p.region}
+            place={p.place}
+            note={p.note}
+            capacity={p.capacity}
+            unit={p.unit ?? 'MW'}
+            status={p.status}
+            cod={p.cod}
+            mediaSize="h-[200px]"
+            attrs={{ 'data-region': p.region, 'data-status': p.status }}
+          />
         ))}
       </div>
 

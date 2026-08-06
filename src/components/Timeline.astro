@@ -1,4 +1,6 @@
 ---
+import Chip from './ui/Chip.astro';
+import MediaFrame from './ui/MediaFrame.astro';
 import { milestones } from '../data/about';
 
 /*
@@ -28,16 +30,12 @@ const last = milestones[milestones.length - 1].year;
         data-index={i}
         class="grid items-center gap-8 border-t border-hairline pt-10 [transform-style:preserve-3d] [backface-visibility:hidden] lg:grid-cols-[320px_1fr] lg:gap-12 lg:border-0 lg:pt-0 [.is-live_&]:absolute [.is-live_&]:inset-0 [.is-live_&]:border-0 [.is-live_&]:pt-0"
       >
-        <div class="relative aspect-[4/3] overflow-hidden border border-hairline bg-[#0b0d0f] lg:aspect-auto lg:h-[240px]">
-          <img
-            data-slide-img
-            src={m.img}
-            alt=""
-            loading={i < 3 ? 'eager' : 'lazy'}
-            class="size-full object-cover opacity-92"
-          />
-          <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/65 to-transparent to-60%"></div>
-        </div>
+        <MediaFrame
+          src={m.img}
+          size="aspect-[4/3] border border-hairline lg:aspect-auto lg:h-[240px]"
+          eager={i < 3}
+          imgAttrs={{ 'data-slide-img': '' }}
+        />
 
         <div>
           <div data-anim class="font-din text-[11px] font-bold tracking-[0.18em] text-solar uppercase">
@@ -53,9 +51,7 @@ const last = milestones[milestones.length - 1].year;
           <p data-anim class="max-w-[56ch] text-[16.5px] text-ink-muted">{m.body}</p>
           <div data-anim class="mt-6 flex flex-wrap gap-2.25">
             {m.chips.map((c) => (
-              <span class="border border-hairline bg-panel px-3.25 py-1.75 font-din text-[12.5px] tracking-[0.06em] text-ink uppercase">
-                {c}
-              </span>
+              <Chip>{c}</Chip>
             ))}
           </div>
         </div>

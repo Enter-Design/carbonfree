@@ -1,0 +1,8 @@
+---
+/* Gradient-clipped numeral. Used for stats, capacities and years. */
+interface Props { size?: string; class?: string }
+const { size = 'text-stat', class: className = '' } = Astro.props;
+---
+<div class:list={['cf-gradient-text font-din-narrow font-bold tracking-[-0.01em]', size, className]}>
+  <slot />
+</div>
