@@ -109,6 +109,6 @@ export const faq = [
   },
   {
     q: 'Who do I actually talk to?',
-    a: 'A member of the CarbonFree development team, based in Toronto. Not a broker, and not a call centre.',
+    a: 'A member of the CarbonFree development team, based in Toronto — not a broker.',
   },
 ];

@@ -354,6 +354,30 @@
     }
   }
 
+  /*
+    Header veil.
+
+    At the top of a page the nav sits directly over the module field (and, on
+    hero pages, over a photograph). This softens whatever is behind the links
+    without painting a bar across the page — the mask fades the blur out before
+    the header's lower edge, so there's nothing to see the boundary of. Once
+    `.is-scrolled` applies, the solid nav surface takes over and this is moot.
+  */
+  .cf-header-veil::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    transition: opacity 0.3s;
+  }
+  .cf-header-veil.is-scrolled::before {
+    opacity: 0;
+  }
+
   /* Diamond marker */
   .cf-mark {
     flex: 0 0 auto;

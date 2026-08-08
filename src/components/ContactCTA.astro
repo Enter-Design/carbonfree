@@ -1,6 +1,5 @@
 ---
 import Eyebrow from './Eyebrow.astro';
-import { site } from '../data/site';
 
 interface Field {
   label: string;
@@ -41,30 +40,46 @@ const {
 } = Astro.props;
 
 const slug = (s: string) => 'f-' + s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/*
+  Reassurance, not a mailing address — the address is already in the footer, and
+  under a submit button the useful thing to say is what happens next. Pages with
+  a more specific promise (the two landing pages) override this with `note`.
+*/
+const DEFAULT_NOTE =
+  'No obligation &middot; You&rsquo;ll hear back from the CarbonFree team in Toronto';
 const fieldBase =
   'w-full border border-hairline bg-veil-field px-3.75 py-3.25 text-[15px] text-ink transition duration-200 outline-none focus:border-solar focus:bg-solar/[0.04]';
 const labelBase = 'mb-2 block font-din text-[13px] font-bold tracking-[0.04em] text-ink-muted uppercase';
 ---
 <section id="contact">
   <div class="relative overflow-hidden border-y border-hairline">
-    <div class="absolute inset-0 z-0">
+    {/*
+      The image was at 30% opacity under a 72% wash of the page colour, which in
+      daylight is a near-white scrim over a near-transparent photo — hence the
+      washed-out look. Photographs shouldn't ride the veil tokens; those are for
+      scrims behind text. The image now sits at full strength with a fixed dark
+      scrim, and the copy gets its own plate for legibility.
+    */}
+    <div class="absolute inset-0 z-0 bg-[#0b0d0f]">
       <img
         src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=2000&q=80"
         alt=""
-        class="size-full object-cover opacity-30"
+        class="size-full object-cover opacity-90"
       />
-      <div class="absolute inset-0 bg-[radial-gradient(820px_420px_at_50%_0,rgb(255_138_0/0.26),transparent_60%)] bg-veil-mid"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(820px_420px_at_50%_0,rgb(255_138_0/0.22),transparent_60%)]"></div>
+      <div class="absolute inset-0 bg-linear-to-r from-black/75 via-black/45 to-black/20"></div>
     </div>
 
     <div class="relative z-2 mx-auto grid max-w-site lg:max-w-none lg:grid-cols-2">
       <div class="cf-reveal flex flex-col justify-center px-8 pt-18 pb-6 lg:py-24 lg:pr-16 lg:edge-gutter-l">
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h2 class="mt-4.5 mb-5 max-w-[18ch] text-headline font-bold" set:html={title} />
-        <p class="max-w-[46ch] text-lg text-ink-muted" set:html={body} />
+        <h2 class="mt-4.5 mb-5 max-w-[18ch] text-headline font-bold text-white" set:html={title} />
+        <p class="max-w-[46ch] text-lg text-white/70" set:html={body} />
         {showDoors && (
           <div class="mt-7.5 flex flex-wrap gap-4">
             <a href="/landowners" class="inline-flex items-center gap-2.5 border border-transparent bg-linear-[135deg,var(--cf-solar),var(--cf-solar-deep)] px-[30px] py-[15px] text-[15px] font-bold text-[#1a1205] transition duration-200 hover:-translate-y-0.5">I have land to lease &rarr;</a>
-            <a href="/clean-power" class="inline-flex items-center gap-2.5 border border-hairline bg-white/[0.02] px-[30px] py-[15px] text-[15px] font-bold text-ink transition duration-200 hover:border-solar hover:text-solar">I have power costs to hedge &rarr;</a>
+            <a href="/clean-power" class="inline-flex items-center gap-2.5 border border-white/25 bg-white/[0.06] px-[30px] py-[15px] text-[15px] font-bold text-white transition duration-200 hover:border-solar hover:text-solar">I have power costs to hedge &rarr;</a>
           </div>
         )}
       </div>
@@ -93,9 +108,7 @@ const labelBase = 'mb-2 block font-din text-[13px] font-bold tracking-[0.04em] t
           >
             {submit}
           </button>
-          <p class="mt-3.5 text-center font-din text-[13px] text-ink-muted">
-            {note ?? `${site.name} Inc. · ${site.address}`}
-          </p>
+          <p class="mt-3.5 text-center font-din text-[13px] text-ink-muted" set:html={note ?? DEFAULT_NOTE} />
         </form>
       </div>
     </div>
