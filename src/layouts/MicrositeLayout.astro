@@ -1,0 +1,126 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+/*
+  Shell for the project consultation sites.
+
+  Deliberately NOT BaseLayout. The corporate header carries "Lease Your Land",
+  "Buy Clean Power", "Projects", "About", "News" — none of which belong on a
+  site whose job is to inform one community about one project. A landowner
+  arriving from a mailed notice should find the project, not a sales funnel.
+
+  The visual language (sky, guides, type scale, sunrise) is shared, so the
+  microsites still read as CarbonFree.
+*/
+interface Props {
+  title: string;
+  description: string;
+  projectName: string;
+  legalName: string;
+  base: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  palette?: 'sunrise' | 'day';
+  pivot?: string;
+}
+
+const {
+  title,
+  description,
+  projectName,
+  legalName,
+  base,
+  contactEmail,
+  contactPhone,
+  palette = 'sunrise',
+  pivot = '#daylight',
+} = Astro.props;
+
+const nav = [
+  { label: 'Home', href: base },
+  { label: 'Project Documents', href: `${base}/project-documents` },
+];
+
+const year = new Date().getFullYear();
+const telHref = contactPhone ? `tel:${contactPhone.replace(/[^\d+]/g, '')}` : undefined;
+---
+
+<!doctype html>
+<html lang="en" data-palette={palette === 'day' ? 'day' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="https://use.typekit.net/ymv7jjc.css" />
+    <ClientRouter />
+  </head>
+
+  <body
+    class="relative overflow-x-hidden font-sans antialiased"
+    data-pivot={pivot}
+    data-trigger-at="0.8"
+    data-sunrise={palette === 'day' ? 'off' : 'on'}
+  >
+    <div class="cf-sky" aria-hidden="true" transition:persist="sky"></div>
+    <div class="cf-guides" aria-hidden="true" transition:persist="guides"><div></div></div>
+
+    <header class="relative z-3 border-b border-hairline">
+      <div class="mx-auto flex w-full max-w-site items-center justify-between gap-8 px-8 py-5">
+        <a href={base} class="min-w-0">
+          <span class="block font-din text-[11.5px] tracking-[0.18em] text-solar uppercase">
+            CarbonFree
+          </span>
+          <span class="block truncate text-[19px] font-bold">{projectName}</span>
+        </a>
+
+        <nav aria-label="Project">
+          <ul class="flex flex-wrap items-center gap-x-7 gap-y-2 font-din text-[13.5px]">
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+                  class="transition duration-200 hover:text-solar aria-[current=page]:text-solar aria-[current=page]:font-bold"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="relative z-1"><slot /></main>
+
+    <footer class="relative z-1 border-t border-hairline py-14">
+      <div class="mx-auto flex w-full max-w-site flex-wrap items-start justify-between gap-8 px-8">
+        <div>
+          <div class="text-[17px] font-bold">{projectName}</div>
+          <div class="mt-2 font-din text-[14px] text-ink-muted">
+            {contactEmail && (
+              <a href={`mailto:${contactEmail}`} class="text-solar underline underline-offset-4">
+                {contactEmail}
+              </a>
+            )}
+            {contactEmail && contactPhone && <span class="px-2">·</span>}
+            {contactPhone && <a href={telHref} class="hover:text-solar">{contactPhone}</a>}
+          </div>
+        </div>
+
+        <div class="font-din text-[13px] text-ink-muted">
+          <a href="https://carbonfree.com/" class="hover:text-solar">carbonfree.com</a>
+          <p class="mt-2">© {year} {legalName}. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      import '../scripts/init';
+    </script>
+  </body>
+</html>

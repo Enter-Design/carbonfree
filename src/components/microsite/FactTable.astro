@@ -1,0 +1,24 @@
+---
+/*
+  The "Project Overview" fact list. On the GoDaddy sites this was a bulleted
+  list of "Label: value" lines; as a definition list it stays scannable and
+  reads correctly to a screen reader, which matters on a page that forms part
+  of a public consultation record.
+*/
+interface Props {
+  rows: [string, string][];
+  class?: string;
+}
+const { rows, class: className = '' } = Astro.props;
+---
+
+{rows.length > 0 && (
+  <dl class:list={['grid border-t border-hairline sm:grid-cols-2', className]}>
+    {rows.map(([label, value]) => (
+      <div class="border-b border-hairline py-5 sm:odd:border-r sm:odd:pr-8 sm:even:pl-8">
+        <dt class="font-din text-[12.5px] tracking-[0.12em] text-ink-muted uppercase">{label}</dt>
+        <dd class="mt-1.5 text-[17px] font-bold text-ink">{value}</dd>
+      </div>
+    ))}
+  </dl>
+)}

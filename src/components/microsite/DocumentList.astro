@@ -1,0 +1,96 @@
+---
+import { formatDate } from '../../lib/date';
+
+/*
+  The public document library.
+
+  Grouped by category rather than presented as one long list: someone arriving
+  from a notice is usually looking for a specific class of document ("the study",
+  "the meeting deck"), not browsing chronologically.
+
+  Every row states file type and size before the click. On a consultation site
+  a good share of visitors are on rural connections, and a 40 MB study opening
+  unannounced is a genuinely bad experience.
+*/
+interface DocEntry {
+  id: string;
+  data: {
+    title: string;
+    category: string;
+    document_date: string;
+    note?: string;
+    document?: { url: string; filename?: string; mimeType?: string; size?: number };
+  };
+}
+
+interface Props {
+  documents: DocEntry[];
+}
+const { documents } = Astro.props;
+
+const categories = [...new Set(documents.map((d) => d.data.category))];
+
+const extension = (doc?: DocEntry['data']['document']) => {
+  if (!doc) return '';
+  const fromName = doc.filename?.split('.').pop();
+  if (fromName && fromName.length <= 5) return fromName.toUpperCase();
+  return doc.mimeType?.split('/').pop()?.toUpperCase() ?? 'FILE';
+};
+
+const readableSize = (bytes?: number) => {
+  if (!bytes) return '';
+  const mb = bytes / 1_048_576;
+  return mb >= 1 ? `${mb.toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+};
+---
+
+{documents.length === 0 ? (
+  <p class="cf-plate max-w-[60ch] pl-(--cf-inset) text-[16.5px] text-ink-muted">
+    No documents have been published for this project yet. Materials from public meetings are
+    posted here as they become available.
+  </p>
+) : (
+  <div class="grid gap-16">
+    {categories.map((category) => (
+      <section>
+        <h2 class="cf-plate mb-5 pl-(--cf-inset) font-din text-[13px] font-bold tracking-[0.16em] text-solar uppercase">
+          {category}
+        </h2>
+
+        <ul class="border-t border-hairline">
+          {documents
+            .filter((d) => d.data.category === category)
+            .map((d) => (
+              <li class="border-b border-hairline">
+                <a
+                  href={d.data.document?.url}
+                  class="group grid items-baseline gap-x-7 gap-y-1 py-5 transition duration-200 hover:bg-white/[0.02] lg:grid-cols-[150px_1fr_auto]"
+                >
+                  <span class="font-din text-[12.5px] tracking-[0.1em] text-ink-muted uppercase">
+                    {formatDate(new Date(d.data.document_date))}
+                  </span>
+
+                  <span class="min-w-0">
+                    <span class="block text-[17px] font-bold transition duration-200 group-hover:text-solar">
+                      {d.data.title}
+                    </span>
+                    {d.data.note && (
+                      <span class="mt-1 block max-w-[70ch] text-[14.5px] text-ink-muted">
+                        {d.data.note}
+                      </span>
+                    )}
+                  </span>
+
+                  <span class="font-din text-[12.5px] tracking-[0.08em] text-ink-muted whitespace-nowrap uppercase">
+                    {[extension(d.data.document), readableSize(d.data.document?.size)]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </span>
+                </a>
+              </li>
+            ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+)}

@@ -1,0 +1,399 @@
+{
+  "version": "1",
+  "meta": {
+    "name": "CarbonFree project microsites",
+    "description": "Content model for per-project consultation sites, modelled on the structure of carbonfreefortfrances.com. Applied on first boot when the database is empty; later schema changes are made in the admin and re-exported here.",
+    "author": "CarbonFree"
+  },
+  "collections": [
+    {
+      "slug": "projects",
+      "label": "Projects",
+      "labelSingular": "Project",
+      "description": "One entry per project microsite, rendered at /sites/{slug}. The slug IS the subdomain label: slug 'fort-frances' serves fort-frances.carbonfree.com. Keeping them identical means the Worker can rewrite the hostname straight to a path with no database lookup on every request. Set 'custom_domain' as well when a project gets its own domain.",
+      "icon": "sun",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "scheduling",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/sites/{slug}",
+      "fields": [
+        {
+          "slug": "custom_domain",
+          "label": "Custom domain",
+          "type": "string",
+          "options": {
+            "help": "Optional. A dedicated domain such as carbonfreefortfrances.com, once one is registered and added as a Cloudflare custom hostname. Leave empty to serve on the subdomain only."
+          }
+        },
+        {
+          "slug": "legal_name",
+          "label": "Legal entity name",
+          "type": "string",
+          "required": true,
+          "options": {
+            "help": "Used in the footer copyright line, e.g. 'CarbonFree Fort Frances Ltd.'"
+          }
+        },
+        {
+          "slug": "dek",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true,
+          "options": {
+            "rows": 2,
+            "help": "Shown in the hero and used as the meta description."
+          }
+        },
+        {
+          "slug": "hero_image",
+          "label": "Hero image",
+          "type": "image",
+          "options": {
+            "showPreview": true
+          }
+        },
+        {
+          "slug": "description",
+          "label": "Project description",
+          "type": "portableText",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "technology",
+          "label": "Technology",
+          "type": "select",
+          "required": true,
+          "defaultValue": "Solar",
+          "validation": {
+            "options": [
+              "Solar",
+              "Solar + Storage",
+              "Storage",
+              "Wind"
+            ]
+          }
+        },
+        {
+          "slug": "capacity_ac",
+          "label": "Nameplate capacity (AC)",
+          "type": "string",
+          "options": {
+            "help": "As presented publicly, e.g. '~ 167 MW'."
+          }
+        },
+        {
+          "slug": "capacity_dc",
+          "label": "Capacity (DC)",
+          "type": "string",
+          "options": {
+            "help": "e.g. '~ 210 MW'."
+          }
+        },
+        {
+          "slug": "location_summary",
+          "label": "Location",
+          "type": "text",
+          "options": {
+            "rows": 3,
+            "help": "Plain-language siting description, e.g. 'Township of Miscampbell, approximately 10km northwest of Fort Frances along Highway 611.'"
+          }
+        },
+        {
+          "slug": "partner",
+          "label": "Community partner",
+          "type": "string",
+          "options": {
+            "help": "e.g. 'Couchiching First Nation'. Leave empty if there is no named partner."
+          }
+        },
+        {
+          "slug": "cod_target",
+          "label": "Target commercial operation",
+          "type": "string",
+          "options": {
+            "help": "e.g. 'On or before May 1, 2030'."
+          }
+        },
+        {
+          "slug": "procurement",
+          "label": "Procurement background",
+          "type": "portableText",
+          "options": {
+            "help": "The IESO / procurement explainer for this project."
+          }
+        },
+        {
+          "slug": "updates",
+          "label": "Notices and updates",
+          "type": "repeater",
+          "options": {
+            "help": "Dated announcements shown prominently — contract awards, milestones, press coverage. Newest first."
+          },
+          "validation": {
+            "subFields": [
+              {
+                "slug": "date",
+                "label": "Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "slug": "title",
+                "label": "Heading",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "body",
+                "label": "Body",
+                "type": "text",
+                "required": true
+              },
+              {
+                "slug": "link_label",
+                "label": "Link label",
+                "type": "string"
+              },
+              {
+                "slug": "link_url",
+                "label": "Link URL",
+                "type": "url"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "agrivoltaics",
+          "label": "Agricultural commitment",
+          "type": "portableText",
+          "options": {
+            "help": "Dual-use / agrivoltaics narrative. Leave empty to omit the section entirely."
+          }
+        },
+        {
+          "slug": "programs",
+          "label": "Land-use programs",
+          "type": "repeater",
+          "options": {
+            "help": "Grazing, pollinator habitat, land-use commitments — one row each."
+          },
+          "validation": {
+            "subFields": [
+              {
+                "slug": "title",
+                "label": "Title",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "body",
+                "label": "Description",
+                "type": "text",
+                "required": true
+              },
+              {
+                "slug": "image",
+                "label": "Image",
+                "type": "image"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "engagement_intro",
+          "label": "Engagement introduction",
+          "type": "portableText",
+          "options": {
+            "help": "Describes the consultation process and how to participate."
+          }
+        },
+        {
+          "slug": "events",
+          "label": "Open houses and events",
+          "type": "repeater",
+          "options": {
+            "help": "Both upcoming and past. The template sorts by date and splits them automatically — do not maintain two lists."
+          },
+          "validation": {
+            "subFields": [
+              {
+                "slug": "date",
+                "label": "Date",
+                "type": "datetime",
+                "required": true
+              },
+              {
+                "slug": "date_label",
+                "label": "Date label",
+                "type": "string",
+                "required": false
+              },
+              {
+                "slug": "title",
+                "label": "Event",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "venue",
+                "label": "Venue",
+                "type": "string"
+              },
+              {
+                "slug": "address",
+                "label": "Address",
+                "type": "string"
+              },
+              {
+                "slug": "details",
+                "label": "Details",
+                "type": "text"
+              },
+              {
+                "slug": "url",
+                "label": "More information",
+                "type": "url"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "economic_benefits",
+          "label": "Economic benefits",
+          "type": "portableText"
+        },
+        {
+          "slug": "contractors",
+          "label": "Local partnered contractors",
+          "type": "repeater",
+          "validation": {
+            "subFields": [
+              {
+                "slug": "name",
+                "label": "Name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "logo",
+                "label": "Logo",
+                "type": "image"
+              },
+              {
+                "slug": "url",
+                "label": "Website",
+                "type": "url"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "solar_explainer",
+          "label": "Solar PV explainer (override)",
+          "type": "portableText",
+          "options": {
+            "help": "Optional. Leave empty and the project inherits the standard shared copy from src/data/microsite.ts. Only fill this in when a project genuinely needs different wording — otherwise every site drifts apart."
+          }
+        },
+        {
+          "slug": "about_override",
+          "label": "About CarbonFree (override)",
+          "type": "portableText",
+          "options": {
+            "help": "Optional. Same principle as the solar explainer — inherits the shared boilerplate unless set."
+          }
+        },
+        {
+          "slug": "contact_email",
+          "label": "Contact email",
+          "type": "string"
+        },
+        {
+          "slug": "contact_phone",
+          "label": "Contact phone",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "project_documents",
+      "label": "Project documents",
+      "labelSingular": "Project document",
+      "description": "Public-facing documents for a project's document library. A separate collection rather than a repeater on the project, because repeater sub-fields cannot hold uploaded files.",
+      "icon": "file-text",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "project",
+          "label": "Project",
+          "type": "reference",
+          "required": true,
+          "options": {
+            "collection": "projects"
+          }
+        },
+        {
+          "slug": "document",
+          "label": "File",
+          "type": "file",
+          "required": true,
+          "validation": {
+            "allowedMimeTypes": [
+              "application/pdf",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "application/vnd.ms-excel",
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            ]
+          }
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "select",
+          "required": true,
+          "defaultValue": "Public meeting materials",
+          "validation": {
+            "options": [
+              "Public meeting materials",
+              "Technical study",
+              "Notice",
+              "Presentation",
+              "Permit or approval",
+              "Other"
+            ]
+          }
+        },
+        {
+          "slug": "document_date",
+          "label": "Document date",
+          "type": "datetime",
+          "required": true,
+          "options": {
+            "help": "The date on the document itself, not the upload date. This is what the public list sorts by."
+          }
+        },
+        {
+          "slug": "note",
+          "label": "Note",
+          "type": "text",
+          "options": {
+            "rows": 2,
+            "help": "Optional one-line context shown under the document title."
+          }
+        }
+      ]
+    }
+  ]
+}

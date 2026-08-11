@@ -1,4 +1,8 @@
 ---
+/* Content for this page comes from markdown and src/data, both of which are
+   readable at build time — so it stays fully static despite server output. */
+export const prerender = true;
+
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Eyebrow from '../../components/Eyebrow.astro';

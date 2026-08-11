@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "carbonfree",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Wrangler provisions both of these on first deploy if they don't exist yet.
+  // The binding names must match astro.config.mjs exactly — d1({ binding: 'DB' })
+  // and r2({ binding: 'MEDIA' }). A mismatch surfaces as "D1 binding not found"
+  // at runtime, not at build.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "carbonfree-cms"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "carbonfree-media"
+    }
+  ],
+
+  // Turns on the Workers edge cache that routeRules in astro.config.mjs drives.
+  // The @astrojs/cloudflare adapter injects this when missing; stating it here
+  // keeps the intent visible.
+  "cache": {
+    "enabled": true
+  },
+
+  // Required for scheduled publishing. Without a cron trigger, content given a
+  // future publish date in the admin never actually goes live on Workers —
+  // it just sits there. Local `astro dev` uses an in-process scheduler, so this
+  // failure only ever shows up in production.
+  "triggers": {
+    "crons": ["* * * * *"]
+  }
+}

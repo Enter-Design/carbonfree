@@ -1,0 +1,52 @@
+---
+/* SSR for the same reason as the project index — content lives in D1. */
+export const prerender = false;
+
+import MicrositeLayout from '../../../layouts/MicrositeLayout.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import DocumentList from '../../../components/microsite/DocumentList.astro';
+import { getProject, getProjectDocuments } from '../../../lib/microsite';
+
+const { project: slug } = Astro.params;
+
+const project = await getProject(slug!);
+if (!project) return new Response(null, { status: 404 });
+
+const d = project.data as Record<string, any>;
+const base = `/sites/${slug}`;
+const documents = await getProjectDocuments(project.id);
+---
+
+<MicrositeLayout
+  title={`Project documents — ${d.title}`}
+  description={`Public documents, studies and meeting materials for ${d.title}.`}
+  projectName={d.title}
+  legalName={d.legal_name}
+  base={base}
+  contactEmail={d.contact_email}
+  contactPhone={d.contact_phone}
+  palette="day"
+>
+  <section class="border-b border-hairline pt-24 pb-16">
+    <div class="cf-plate mx-auto w-full max-w-site px-8 pl-(--cf-inset)">
+      <Eyebrow class="cf-reveal">Project documents</Eyebrow>
+      <h1 class="cf-reveal mt-4 text-[clamp(30px,3.8vw,46px)] font-bold">Documents and studies</h1>
+      <p class="cf-reveal mt-5 max-w-[62ch] text-lede text-ink-muted">
+        Materials published for {d.title}, including presentations from public meetings, technical
+        studies and formal notices.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="mx-auto w-full max-w-site px-8">
+      <DocumentList documents={documents as any} />
+
+      <div class="cf-plate cf-reveal mt-16 border-t border-hairline pt-8 pl-(--cf-inset)">
+        <a href={base} class="inline-flex items-center gap-2 text-[16px] font-bold text-solar underline underline-offset-4">
+          <span aria-hidden="true">&larr;</span> Back to the project
+        </a>
+      </div>
+    </div>
+  </section>
+</MicrositeLayout>

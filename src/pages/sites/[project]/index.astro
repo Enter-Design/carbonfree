@@ -1,0 +1,245 @@
+---
+/*
+  A project consultation microsite.
+
+  Rendered on request rather than prerendered: the content lives in D1, and a
+  D1 binding only exists inside a running Worker, so there is nothing for
+  `astro build` to read. The edge cache configured in astro.config.mjs
+  (routeRules['/sites/**']) is what keeps this fast — a visitor almost always
+  gets a cached response without touching the Worker or the database.
+*/
+export const prerender = false;
+
+import { PortableText } from 'emdash/ui';
+import MicrositeLayout from '../../../layouts/MicrositeLayout.astro';
+import Section from '../../../components/blocks/Section.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import Card from '../../../components/ui/Card.astro';
+import MediaFrame from '../../../components/ui/MediaFrame.astro';
+import FactTable from '../../../components/microsite/FactTable.astro';
+import EventList from '../../../components/microsite/EventList.astro';
+import { getProject, splitEvents, projectFacts } from '../../../lib/microsite';
+import { solarExplainer, aboutCarbonFree, aboutLinkHref, aboutLinkLabel } from '../../../data/microsite';
+import { formatDate } from '../../../lib/date';
+
+const { project: slug } = Astro.params;
+
+const project = await getProject(slug!);
+if (!project) return new Response(null, { status: 404 });
+
+const d = project.data as Record<string, any>;
+const base = `/sites/${slug}`;
+const facts = projectFacts(d);
+const { upcoming, past } = splitEvents(d.events ?? []);
+const updates = [...(d.updates ?? [])].sort(
+  (a: any, b: any) => new Date(b.date).valueOf() - new Date(a.date).valueOf(),
+);
+---
+
+<MicrositeLayout
+  title={`${d.title} — CarbonFree`}
+  description={d.dek}
+  projectName={d.title}
+  legalName={d.legal_name}
+  base={base}
+  contactEmail={d.contact_email}
+  contactPhone={d.contact_phone}
+  pivot="#daylight"
+>
+  <!-- HERO -->
+  <section class="relative flex min-h-[78vh] items-center overflow-hidden border-b border-hairline py-24">
+    {d.hero_image?.url && (
+      <div class="absolute inset-0 z-0">
+        <img src={d.hero_image.url} alt={d.hero_image.alt ?? ''} class="size-full object-cover opacity-34" />
+        <div class="absolute inset-0 bg-[linear-gradient(90deg,var(--cf-veil-heavy)_4%,var(--cf-veil-mid)_58%,var(--cf-veil-light))]"></div>
+      </div>
+    )}
+
+    <div class="cf-plate relative z-2 mx-auto w-full max-w-site px-8">
+      <Eyebrow class="cf-reveal">{d.technology} · {d.partner ? `With the ${d.partner}` : 'In development'}</Eyebrow>
+      <h1 class="cf-reveal mt-5 mb-6 max-w-[20ch] text-[clamp(32px,4.4vw,58px)] font-bold">{d.title}</h1>
+      <p class="cf-reveal max-w-[62ch] text-lede text-ink-muted">{d.dek}</p>
+
+      {(d.capacity_ac || d.capacity_dc) && (
+        <div class="cf-reveal mt-9 flex flex-wrap gap-x-10 gap-y-3 border-t border-hairline pt-6">
+          {d.capacity_ac && (
+            <div>
+              <div class="cf-gradient-text font-din-narrow text-[clamp(28px,3vw,40px)] font-bold">{d.capacity_ac}</div>
+              <div class="font-din text-[12px] tracking-[0.12em] text-ink-muted uppercase">Nameplate AC</div>
+            </div>
+          )}
+          {d.capacity_dc && (
+            <div>
+              <div class="cf-gradient-text font-din-narrow text-[clamp(28px,3vw,40px)] font-bold">{d.capacity_dc}</div>
+              <div class="font-din text-[12px] tracking-[0.12em] text-ink-muted uppercase">Capacity DC</div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- NOTICES — the most time-sensitive thing on the page, so it leads. -->
+  {updates.length > 0 && (
+    <section id="daylight" class="border-b border-hairline py-16">
+      <div class="mx-auto w-full max-w-site px-8">
+        <Eyebrow class="cf-reveal mb-7 pl-(--cf-inset)">Latest updates</Eyebrow>
+        <div class="grid gap-px lg:grid-cols-2">
+          {updates.map((u: any) => (
+            <Card bar="top" class="cell-inset py-8">
+              <div class="font-din text-[12.5px] tracking-[0.12em] text-solar uppercase">
+                {formatDate(new Date(u.date), true)}
+              </div>
+              <h2 class="mt-3 text-[21px] leading-snug font-bold">{u.title}</h2>
+              <p class="mt-3 max-w-[60ch] text-[15.5px] text-ink-muted">{u.body}</p>
+              {u.link_url && (
+                <a href={u.link_url} class="mt-5 inline-flex items-center gap-2 text-[15px] font-bold text-solar underline underline-offset-4">
+                  {u.link_label ?? 'Read more'} <span aria-hidden="true">&rarr;</span>
+                </a>
+              )}
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- OVERVIEW -->
+  <Section id={updates.length ? undefined : 'daylight'} eyebrow="Project overview" title="About the project">
+    <div class="cf-prose cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+      <PortableText value={d.description} />
+    </div>
+
+    {d.location_summary && (
+      <div class="cf-plate cf-reveal mt-10 max-w-[70ch] pl-(--cf-inset)">
+        <h3 class="font-din text-[13px] font-bold tracking-[0.16em] text-solar uppercase">Location</h3>
+        <p class="mt-3 text-[16.5px] text-ink-muted">{d.location_summary}</p>
+      </div>
+    )}
+
+    <FactTable rows={facts} class="cf-reveal mt-12" />
+  </Section>
+
+  <!-- PROCUREMENT -->
+  {d.procurement && (
+    <Section eyebrow="Procurement" title="How this project is contracted" spacing="pb-28">
+      <div class="cf-prose cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+        <PortableText value={d.procurement} />
+      </div>
+    </Section>
+  )}
+
+  <!-- AGRICULTURAL COMMITMENT -->
+  {d.agrivoltaics && (
+    <Section eyebrow="Agricultural commitment" title="Dual-use design" spacing="pb-28">
+      <div class="cf-prose cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+        <PortableText value={d.agrivoltaics} />
+      </div>
+
+      {(d.programs ?? []).length > 0 && (
+        <div class="cf-reveal mt-12 grid gap-px lg:grid-cols-3">
+          {d.programs.map((p: any) => (
+            <Card bar="top" class="cell-inset py-8">
+              {p.image?.url && <MediaFrame src={p.image.url} alt="" size="h-[160px]" class="mb-6 -mx-(--cf-inset)" />}
+              <h3 class="text-[19px] font-bold">{p.title}</h3>
+              <p class="mt-3 text-[15px] text-ink-muted">{p.body}</p>
+            </Card>
+          ))}
+        </div>
+      )}
+    </Section>
+  )}
+
+  <!-- ENGAGEMENT + EVENTS -->
+  <Section eyebrow="Community engagement" title="Open houses and public meetings" spacing="pb-28">
+    {d.engagement_intro && (
+      <div class="cf-prose cf-plate cf-reveal mb-12 max-w-[70ch] pl-(--cf-inset)">
+        <PortableText value={d.engagement_intro} />
+      </div>
+    )}
+
+    {upcoming.length > 0 ? (
+      <div class="cf-reveal">
+        <Eyebrow class="mb-6 pl-(--cf-inset)">Upcoming</Eyebrow>
+        <EventList events={upcoming} variant="upcoming" />
+      </div>
+    ) : (
+      <p class="cf-plate cf-reveal max-w-[60ch] pl-(--cf-inset) text-[16.5px] text-ink-muted">
+        No further meetings are scheduled at this time. Dates are posted here as they are confirmed.
+      </p>
+    )}
+
+    {past.length > 0 && (
+      <div class="cf-reveal mt-16">
+        <Eyebrow class="mb-6 pl-(--cf-inset)">Past events</Eyebrow>
+        <EventList events={past} variant="past" />
+      </div>
+    )}
+
+    <div class="cf-plate cf-reveal mt-12 pl-(--cf-inset)">
+      <a href={`${base}/project-documents`} class="inline-flex items-center gap-2 text-[16px] font-bold text-solar underline underline-offset-4">
+        Project documents <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </Section>
+
+  <!-- ECONOMIC BENEFITS -->
+  {d.economic_benefits && (
+    <Section eyebrow="Economic benefits" title="What the project brings locally" spacing="pb-28">
+      <div class="cf-prose cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+        <PortableText value={d.economic_benefits} />
+      </div>
+
+      {(d.contractors ?? []).length > 0 && (
+        <div class="cf-reveal mt-12">
+          <Eyebrow class="mb-6 pl-(--cf-inset)">Local partnered contractors</Eyebrow>
+          <div class="flex flex-wrap items-center gap-x-12 gap-y-8 border-y border-hairline py-9 pl-(--cf-inset)">
+            {d.contractors.map((c: any) =>
+              c.logo?.url ? (
+                <img src={c.logo.url} alt={c.name} class="h-11 w-auto opacity-80" />
+              ) : (
+                <span class="text-[16px] font-bold">{c.name}</span>
+              ),
+            )}
+          </div>
+        </div>
+      )}
+    </Section>
+  )}
+
+  <!-- SHARED BOILERPLATE — identical across every project unless overridden. -->
+  <Section eyebrow={solarExplainer.eyebrow} title={solarExplainer.title} spacing="pb-28">
+    {d.solar_explainer ? (
+      <div class="cf-prose cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+        <PortableText value={d.solar_explainer} />
+      </div>
+    ) : (
+      <>
+        <div class="cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+          {solarExplainer.body.map((p) => <p class="text-[16.5px] text-ink-muted">{p}</p>)}
+        </div>
+        <ul class="cf-reveal mt-10 grid gap-px sm:grid-cols-2 lg:grid-cols-3">
+          {(solarExplainer.points ?? []).map((pt) => (
+            <li class="border border-hairline bg-panel cell-inset py-7">
+              <div class="text-[16px] font-bold">{pt.label}</div>
+              <p class="mt-2 text-[14.5px] text-ink-muted">{pt.text}</p>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </Section>
+
+  <Section eyebrow={aboutCarbonFree.eyebrow} title={aboutCarbonFree.title} spacing="pb-28">
+    <div class="cf-plate cf-reveal max-w-[70ch] pl-(--cf-inset)">
+      {d.about_override ? (
+        <div class="cf-prose"><PortableText value={d.about_override} /></div>
+      ) : (
+        aboutCarbonFree.body.map((p) => <p class="mb-4 text-[16.5px] text-ink-muted">{p}</p>)
+      )}
+      <a href={aboutLinkHref} class="mt-5 inline-flex items-center gap-2 text-[16px] font-bold text-solar underline underline-offset-4">
+        {aboutLinkLabel} <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </Section>
+</MicrositeLayout>
