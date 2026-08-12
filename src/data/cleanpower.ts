@@ -129,3 +129,60 @@ export const faq = [
     a: 'Facility location, annual electricity consumption, Class A status, peak demand factor information, and historical interval data if you have it.',
   },
 ];
+
+/* ---------------------------------------------------------------------------
+   PLACEHOLDER CONTENT — none of this is real.
+
+   Written to size the layout, not to be published. No CarbonFree offtaker has
+   said any of it and no such contract is known to exist; the load figures,
+   terms and buyer descriptions are invented.
+
+   Note the buyers are described by sector rather than named, which is how PPA
+   case studies usually have to run — offtake terms are commercially sensitive
+   and most counterparties will not be identified. Even anonymised, a real
+   version needs the buyer's written sign-off on the wording.
+
+   Both blocks render inside `.cf-draft`, which frames them and labels the
+   frame. Clearing the `placeholder` flag removes the frame and the markers.
+--------------------------------------------------------------------------- */
+
+export const caseStudy = {
+  placeholder: true,
+  draftLabel: 'Placeholder — illustrative, not a real contract',
+  location: 'A food processor, southwestern Ontario',
+  image: 'https://carbonfree.com/wp-content/uploads/2021/09/Molina-h.jpeg',
+  imageAlt: 'Rows of ground-mounted solar panels on an open site',
+  lede: 'Three plants running cold storage around the clock, a Class A account, and a board that had stopped believing any electricity budget presented to it.',
+  stats: [
+    { value: '38', unit: 'GWh', label: 'contracted annually, about 60% of load' },
+    { value: '20', unit: 'yr', label: 'term, at a price fixed on day one' },
+    { value: '5', unit: 'mo', label: 'from load profile to signed PPA' },
+  ],
+  body: [
+    'Refrigeration load does not move. It runs through the peak hours that set Global Adjustment, and it runs through them every summer. The finance team could forecast volume accurately and still miss the electricity line by a wide margin, because the part they could not forecast was the rate.',
+    'Contracting roughly sixty per cent of load at a fixed price left the remainder exposed to the market deliberately — enough to benefit if prices fall, not enough to derail a budget if they climb. The clean energy credits came with the contract and went to the Scope 2 reporting the customer was already doing. Nothing was installed at any of the three plants.',
+  ],
+  quote: 'We did not do this to beat the market. We did it so that the number we put in the budget in November is the number we pay in July.',
+  attribution: 'Director of Finance, food processing',
+} as const;
+
+export const testimonials = [
+  {
+    placeholder: true,
+    quote: 'They came back and told us to contract less than we had asked for. That was the point I started taking the numbers seriously.',
+    name: 'Offtaker',
+    detail: 'Manufacturing · Class A · southwestern Ontario',
+  },
+  {
+    placeholder: true,
+    quote: 'Our sustainability team wanted the credits and our CFO wanted the certainty. This was the first thing that got both of them to agree.',
+    name: 'Offtaker',
+    detail: 'Food and beverage · multi-site',
+  },
+  {
+    placeholder: true,
+    quote: 'The modelling they showed us included the years where we would be worse off. Nobody else put that in the deck.',
+    name: 'Offtaker',
+    detail: 'Industrial · Class A · eastern Ontario',
+  },
+] as const;

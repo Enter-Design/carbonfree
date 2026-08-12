@@ -84,7 +84,18 @@ const labelBase = 'mb-2 block font-din text-[13px] font-bold tracking-[0.04em] t
         )}
       </div>
 
-      <div class="cf-reveal border-hairline bg-veil-panel px-8 py-10 backdrop-blur-[6px] lg:border-l lg:py-16 lg:pl-16 lg:edge-gutter-r">
+      {/*
+        `bg-panel`, not `bg-white`. The plate has to stay opaque white in
+        daylight but still flip with the palette, because everything inside it
+        — `text-ink`, `text-ink-muted`, `bg-veil-field` — is palette-driven.
+        Pinning the plate to literal white would leave near-white `text-ink` on
+        a white field whenever the page is in its night palette: before the
+        sunrise runs, during the 650ms sunset on navigation away, and on any
+        load where the script doesn't run. `--cf-panel` is #ffffff by day and
+        #0e1113 at night, so the pairing holds at both ends and through the lerp.
+        Opaque, so no backdrop-blur — there is nothing left to see through.
+      */}
+      <div class="cf-reveal border-hairline bg-panel px-8 py-10 lg:border-l lg:py-16 lg:pl-16 lg:edge-gutter-r">
         <form>
           <div class="grid gap-x-4 sm:grid-cols-2">
             {fields.map((f) => (

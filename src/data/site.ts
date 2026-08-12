@@ -33,7 +33,7 @@ export const facts = {
 } as const;
 
 export const stats = [
-  { value: facts.projects, label: 'Projects developed and commissioned' },
+  { value: facts.projects, label: 'Projects developed and commissioned since 2006' },
   { value: facts.commissioned, unit: 'dc', label: 'Commissioned across three countries' },
   { value: facts.pipeline, label: 'Under advanced development in Canada' },
   { value: facts.capital, label: `Project capital raised across ${facts.financings} financings` },

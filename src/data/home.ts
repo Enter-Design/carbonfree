@@ -1,3 +1,8 @@
+import couchiching from '../assets/partners/couchiching.webp';
+import fengate from '../assets/partners/fengate.webp';
+import mississauga from '../assets/partners/mississauga.webp';
+import rainyRiver from '../assets/partners/rainy-river.webp';
+
 export const doors = [
   {
     id: 'door-land',
@@ -100,7 +105,7 @@ export const news = [
     date: 'April 2026',
     title: '381 MW awarded in IESO LT2 procurement',
     body: 'CarbonFree and Fengate secured three solar contracts — Fort Frances, Kynoch and Rainy River — the largest single-proponent award in the round.',
-    href: '/news/ieso-lt2-award',
+    href: '/news/three-solar-contracts-381-mw-in-ontario',
   },
   {
     date: '2026',
@@ -116,9 +121,36 @@ export const news = [
   },
 ] as const;
 
+/*
+  Partner marks. `logoScale` trims each mark to the same optical weight rather
+  than the same bounding box: the Rainy River drum carries long hanging ties
+  that inflate its box, so matching raw heights would render it visibly
+  smaller, while the solid Fengate letterform reads heavier than it measures.
+  The drum sets the ceiling at 1 — values above that would overflow the box.
+*/
 export const partners = [
-  { name: 'Couchiching First Nation', role: 'Fort Frances Solar — 167 MW' },
-  { name: 'Mississauga First Nation', role: 'Kynoch Solar — 154 MW' },
-  { name: 'Rainy River First Nations', role: 'Rainy River Solar — 60 MW' },
-  { name: 'Fengate Asset Management', role: 'Energy-transition investment partner' },
+  {
+    name: 'Couchiching First Nation',
+    role: 'Fort Frances Solar — 167 MW',
+    logo: couchiching,
+    logoScale: 0.88,
+  },
+  {
+    name: 'Mississauga First Nation',
+    role: 'Kynoch Solar — 154 MW',
+    logo: mississauga,
+    logoScale: 0.86,
+  },
+  {
+    name: 'Rainy River First Nations',
+    role: 'Rainy River Solar — 60 MW',
+    logo: rainyRiver,
+    logoScale: 1,
+  },
+  {
+    name: 'Fengate Asset Management',
+    role: 'Energy-transition investment partner',
+    logo: fengate,
+    logoScale: 0.78,
+  },
 ] as const;

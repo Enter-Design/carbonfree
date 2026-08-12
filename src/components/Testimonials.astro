@@ -1,0 +1,30 @@
+---
+import Card from './ui/Card.astro';
+
+/*
+  A quote nobody has given is the most dangerous kind of placeholder on the
+  site — it reads as evidence. Any entry still flagged `placeholder` keeps the
+  draft frame and a marked attribution until a real, permissioned quote lands.
+*/
+interface Props { items: Record<string, any>[] }
+const { items: testimonials } = Astro.props;
+const draft = testimonials.some((t) => t.placeholder);
+---
+<div
+  class:list={['cf-reveal', draft && 'cf-draft px-8 py-11 lg:px-11']}
+  data-draft={draft ? 'Placeholder — nobody has given these quotes' : undefined}
+>
+  <div class="grid gap-5 lg:grid-cols-3">
+    {testimonials.map((t) => (
+      <Card bar="top" class="flex flex-col cell-inset pt-8 pb-7.5">
+        <p class="text-[16.5px] leading-[1.55] text-ink">&ldquo;{t.quote}&rdquo;</p>
+        <footer class="mt-auto pt-7">
+          {t.placeholder
+            ? <span class="cf-todo">Awaiting a real, permissioned quote</span>
+            : <span class="block text-[15px] font-bold">{t.name}</span>}
+          <span class="mt-2 block font-din text-[13px] text-ink-muted">{t.detail}</span>
+        </footer>
+      </Card>
+    ))}
+  </div>
+</div>

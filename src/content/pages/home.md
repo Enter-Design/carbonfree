@@ -31,7 +31,7 @@ blocks:
       body: >-
         The largest total contract capacity awarded to a single proponent in the round &mdash;
         advanced in partnership with three First Nations communities.
-      link: { label: Read the announcement, href: /news/ieso-lt2-award }
+      link: { label: Read the announcement, href: /news/three-solar-contracts-381-mw-in-ontario }
       footnote: >-
         <b class="text-ink">Fort Frances 167&nbsp;MW</b>, <b class="text-ink">Kynoch 154&nbsp;MW</b>
         &amp; <b class="text-ink">Rainy River 60&nbsp;MW</b> now advancing toward construction.
@@ -72,8 +72,8 @@ blocks:
 
   - type: split
     id: finance
-    image: https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1400&q=80
-    imageAlt: Solar array across open land
+    image: /images/encon-road.jpg
+    imageAlt: Ground-mounted solar array on a gravel site below arid mountains
     badgeValue: US$2.4B+
     badgeLabel: project capital raised across<br>9 financings since 2006
     eyebrow: Our capital record
@@ -95,6 +95,6 @@ blocks:
 
   - type: contact
     id: contact
-    title: Let&rsquo;s build the next chapter of the energy transition.
+    title: Let&rsquo;s build the next chapter of Ontario's energy transition.
     body: Whether you&rsquo;re a landowner, energy user, community, or capital partner — we&rsquo;d like to hear from you.
 ---

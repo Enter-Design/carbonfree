@@ -6,8 +6,14 @@ import ContactCTA from '../../components/ContactCTA.astro';
 import MediaFrame from '../../components/ui/MediaFrame.astro';
 import { formatDate } from '../../lib/date';
 
+/*
+  Featured entries are sticky: they hold the lead slot even once newer stories
+  are published. Within each group the order is newest first.
+*/
 const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) ||
+    b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const [lead, ...rest] = posts;
 const stamp = (p: (typeof posts)[number]) => p.data.dateLabel ?? formatDate(p.data.date);

@@ -1,0 +1,71 @@
+---
+import Eyebrow from './Eyebrow.astro';
+import Figure from './ui/Figure.astro';
+import MediaFrame from './ui/MediaFrame.astro';
+
+/*
+  While `data.placeholder` is true the whole block renders inside a `.cf-draft`
+  frame and the attribution wears a `.cf-todo` chip. Clearing the flag once
+  real, permissioned material replaces the copy removes both.
+*/
+interface Props { data: Record<string, any> }
+const { data: s } = Astro.props;
+const draft = s.placeholder;
+
+/*
+  Both rows share this column template, so the photograph and the narrative
+  line up in one column while the figures and the quote line up in the other.
+  The image is part of the grid rather than a banner laid over the top of it.
+*/
+const COLS = 'grid gap-x-12 gap-y-9 lg:grid-cols-[1.05fr_1fr]';
+---
+<div
+  class:list={['cf-reveal', draft && 'cf-draft px-8 py-11 lg:px-11']}
+  data-draft={draft ? (s.draftLabel ?? 'Placeholder — illustrative only') : undefined}
+>
+  <Eyebrow>{s.location}</Eyebrow>
+  <p class="mt-4.5 mb-10 max-w-[58ch] text-[19px] leading-[1.5]">{s.lede}</p>
+
+  <div class={COLS}>
+    {s.image && (
+      <figure>
+        <MediaFrame src={s.image} alt={s.imageAlt} size="aspect-[4/3]" class="border border-hairline" />
+        <figcaption class="mt-3.5 font-din text-[12.5px] leading-relaxed text-ink-muted">
+          Farmland of the kind described &mdash; not the parcel itself.
+        </figcaption>
+      </figure>
+    )}
+
+    {/* Stacked, so three figures fill the height of the photograph beside them. */}
+    <dl class="flex flex-col justify-center self-stretch">
+      {s.stats.map((stat, i) => (
+        <div class:list={['py-6 first:pt-0 last:pb-0', i > 0 && 'border-t border-hairline']}>
+          <dt class="sr-only">{stat.label}</dt>
+          <dd>
+            <Figure size="text-[clamp(30px,3.2vw,44px)]">
+              {stat.value}<span class="text-[0.5em]">&#8202;{stat.unit}</span>
+            </Figure>
+            <div class="mt-1.5 max-w-[30ch] font-din text-[13px] text-ink-muted">{stat.label}</div>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+
+  <div class:list={[COLS, 'mt-11']}>
+    <div class="grid gap-4.5 text-[16px] leading-relaxed text-ink-muted">
+      {s.body.map((para) => <p>{para}</p>)}
+    </div>
+
+    <blockquote class="border-l-2 border-solar pl-7 lg:pl-9">
+      <p class="text-[clamp(19px,2.1vw,26px)] leading-[1.32] font-bold tracking-[-0.01em] text-ink">
+        &ldquo;{s.quote}&rdquo;
+      </p>
+      <footer class="mt-5.5">
+        {draft
+          ? <span class="cf-todo">{s.attribution} — unattributed</span>
+          : <span class="font-din text-[13.5px] text-ink-muted">{s.attribution}</span>}
+      </footer>
+    </blockquote>
+  </div>
+</div>

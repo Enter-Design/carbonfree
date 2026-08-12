@@ -12,8 +12,8 @@ blocks:
       Electricity costs are volatile, climbing, and impossible to budget more than a year out. Buy
       power directly from our solar projects at a price fixed by contract for 15 to 20 years. Your
       rate is set, market spikes don&rsquo;t reach you, and the clean energy credits are yours.
-    image: https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=2000&q=80
-    imageAlt: Utility-scale solar array
+    image: https://carbonfree.com/wp-content/uploads/2014/11/KS.jpg
+    imageAlt: Kingston Solar, Ontario
     actions:
       - { label: See what a fixed rate would look like, href: "#assessment" }
       - { label: How it works, href: "#how", variant: ghost }
@@ -74,8 +74,8 @@ blocks:
 
   - type: split
     id: fit
-    image: https://carbonfree.com/wp-content/uploads/2014/11/KS.jpg
-    imageAlt: Kingston Solar, Ontario
+    image: https://carbonfree.com/wp-content/uploads/2014/11/GRS1.jpg
+    imageAlt: Grand Renewable Solar, Ontario
     reverse: true
     badgeValue: 381 MW
     badgeLabel: awarded in Ontario&rsquo;s<br>2026 IESO procurement
@@ -93,17 +93,42 @@ blocks:
       we&rsquo;ll tell you whether it&rsquo;s worth evaluating &mdash; at no cost, and with no
       commitment either way.
 
-  - type: list
-    eyebrow: What to expect
-    title: Clear answers before you commit.
-    source: power.expectations
-
-  - type: faq
-    id: faq
+  - type: caseStudy
+    id: case-study
+    source: power.caseStudy
     spacing: pb-28
-    eyebrow: FAQ
-    title: Questions Class A customers ask.
-    source: power.faq
+    eyebrow: "Case study: A contract in practice"
+    title: What it looks like for one Ontario buyer.
+    body: >-
+      Load profiles differ on every site, but the shape of the arrangement
+      &mdash; and the pace of it &mdash; does not.
+
+  - type: testimonials
+    id: testimonials
+    source: power.testimonials
+    spacing: pb-28
+    eyebrow: In their words
+    title: What Ontario buyers say about working with us.
+
+  - type: leadership
+    id: team
+    variant: profile
+    spacing: pb-28
+    eyebrow: Your supplier, for the whole term
+    title: A 20-year price is only as good as the company behind it.
+    body: >-
+      A corporate PPA runs longer than most commercial relationships, so the
+      question that matters is who is on the other side of it. CarbonFree was
+      founded in Toronto in 2006 and much of the senior team joined within the
+      first two years. Development, financing, construction and operation all
+      sit under one roof &mdash; the people who structure your contract are the
+      people who built the project behind it.
+    only:
+      - Graham Erion
+      - Andrew Kennedy
+      - Daniel Soper
+      - David Oxtoby
+    link: { label: Meet the full leadership team, href: /leadership }
 
   - type: contact
     id: assessment
@@ -120,8 +145,8 @@ blocks:
       - { label: Company, half: true }
       - { label: Email, type: email, half: true }
       - { label: Facility location, half: true }
-      - { label: Class A customer?, type: select, half: true, options: [Yes, No, Not sure] }
+      - { label: "Class A customer?", type: select, half: true, options: ["Yes", "No", "Not sure"] }
       - { label: Approximate annual electricity usage, half: true }
       - { label: Sustainability or clean energy targets, half: true }
-      - { label: Anything else we should know?, type: textarea }
+      - { label: "Anything else we should know?", type: textarea }
 ---

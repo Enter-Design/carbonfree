@@ -1,10 +1,34 @@
 ---
+import { Image } from 'astro:assets';
 import Card from './ui/Card.astro';
 import { partners } from '../data/home';
+
+/*
+  Every mark sits in a box of this height and is centred in it, so the names
+  below stay on one baseline no matter how tall or wide the artwork is. The
+  per-partner `logoScale` then balances optical weight within that box.
+*/
+const BOX = 88;
+
+/* Render at 2x for density, but never ask for more pixels than the source has. */
+const emitted = (logo: { height: number }) => Math.min(BOX * 2, logo.height);
 ---
 <div class="cf-reveal mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
   {partners.map((p) => (
-    <Card bar="none" class="cell-inset py-7.5">
+    <Card bar="none" class="flex flex-col cell-inset py-7.5">
+      <div class="mb-6 flex items-center" style={`height:${BOX}px`}>
+        {/*
+          Decorative: the partner's name is already in text directly below, so
+          alt text here would make a screen reader announce it twice.
+        */}
+        <Image
+          src={p.logo}
+          alt=""
+          height={emitted(p.logo)}
+          class="w-auto max-w-[152px] object-contain"
+          style={`max-height:${Math.round(BOX * p.logoScale)}px`}
+        />
+      </div>
       <div class="text-base font-bold text-ink">{p.name}</div>
       <div class="mt-1.5 font-din text-[13px] text-ink-muted">{p.role}</div>
     </Card>

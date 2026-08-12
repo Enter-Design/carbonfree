@@ -16,6 +16,9 @@ import Steps from './Steps.astro';
 import Compare from './Compare.astro';
 import FitList from './FitList.astro';
 import Faq from './Faq.astro';
+import CaseStudy from './CaseStudy.astro';
+import Testimonials from './Testimonials.astro';
+import LeaderProfiles from './LeaderProfiles.astro';
 import Timeline from './Timeline.astro';
 import ContactCTA from './ContactCTA.astro';
 import ArrowLink from './ArrowLink.astro';
@@ -46,6 +49,14 @@ const SOURCES: Record<string, readonly any[]> = {
   'power.fit': power.fit,
   'power.expectations': power.expectations,
   'power.faq': power.faq,
+  'land.testimonials': land.testimonials,
+  'power.testimonials': power.testimonials,
+};
+
+/* Same idea as SOURCES, for blocks fed by a single object rather than a list. */
+const OBJECTS: Record<string, any> = {
+  'land.caseStudy': land.caseStudy,
+  'power.caseStudy': power.caseStudy,
 };
 
 const items = (p: Record<string, any>) => (p.source ? SOURCES[p.source] : p.items) ?? [];
@@ -152,17 +163,47 @@ const { blocks, context = {} } = Astro.props;
   }
 
   if (type === 'leadership') {
+    /*
+      `only` names a subset in the order given, so a page can lead with the
+      people its reader will actually deal with. An unmatched name is dropped
+      rather than rendered blank — a typo shows up as a missing card.
+      `variant: 'profile'` swaps the name/role cards for photo profiles.
+    */
+    const roster: typeof leadership = p.only
+      ? (p.only as string[]).map((n) => leadership.find((l) => l.name === n)).filter(Boolean as any)
+      : leadership;
+
     return (
       <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
-        <div class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {leadership.map((person) => (
-            <Card bar="top" class="cell-inset pt-7 pb-7.5">
-              <div class="text-[17px] font-bold">{person.name}</div>
-              <div class="mt-1.5 font-din text-[13.5px] text-ink-muted">{person.role}</div>
-            </Card>
-          ))}
-        </div>
+        {p.variant === 'profile' ? (
+          <LeaderProfiles people={roster} />
+        ) : (
+          <div class="cf-reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {roster.map((person) => (
+              <Card bar="top" class="cell-inset pt-7 pb-7.5">
+                <div class="text-[17px] font-bold">{person.name}</div>
+                <div class="mt-1.5 font-din text-[13.5px] text-ink-muted">{person.role}</div>
+              </Card>
+            ))}
+          </div>
+        )}
         {p.link && <div class="cf-reveal mt-10 pl-(--cf-inset)"><ArrowLink href={p.link.href}>{p.link.label}</ArrowLink></div>}
+      </Section>
+    );
+  }
+
+  if (type === 'caseStudy') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <CaseStudy data={OBJECTS[p.source]} />
+      </Section>
+    );
+  }
+
+  if (type === 'testimonials') {
+    return (
+      <Section id={p.id} eyebrow={p.eyebrow} title={p.title} body={p.body} spacing={p.spacing}>
+        <Testimonials items={items(p)} />
       </Section>
     );
   }

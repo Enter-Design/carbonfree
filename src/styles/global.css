@@ -213,6 +213,35 @@
     .cf-reveal { opacity: 1; transform: none; transition: none; }
   }
 
+  /*
+    Frames a whole section of unresolved copy — an illustrative case study, a
+    testimonial nobody has given yet. `.cf-todo` marks a single value; this
+    marks a block, and puts its label in the border so the frame reads as a
+    comp rather than as a design element. Set the label with `data-draft`.
+  */
+  .cf-draft {
+    position: relative;
+    border: 1px dashed var(--cf-solar);
+    background: color-mix(in srgb, var(--cf-solar) 4%, transparent);
+  }
+  .cf-draft::before {
+    content: attr(data-draft);
+    position: absolute;
+    top: 0;
+    left: 26px;
+    transform: translateY(-50%);
+    border: 1px dashed var(--cf-solar);
+    background: var(--cf-surface);
+    padding: 4px 10px;
+    color: var(--cf-solar);
+    font-family: var(--font-din);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
   /* Marks copy that is still unresolved, e.g. a value awaiting sign-off. */
   .cf-todo {
     display: inline-block;

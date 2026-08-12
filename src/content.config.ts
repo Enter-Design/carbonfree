@@ -34,11 +34,16 @@ const news = defineCollection({
         }),
       )
       .default([]),
-    /** Rendered as pull quotes. `lead` is the display line, `body` the full quote. */
+    /**
+     * Rendered as pull quotes. `body` is the full quotation and is the only
+     * required text: omit `lead` unless the source actually contains a short
+     * standalone line worth pulling out. Never paraphrase into `lead` — it is
+     * rendered inside quotation marks and attributed to `name`.
+     */
     quotes: z
       .array(
         z.object({
-          lead: z.string(),
+          lead: z.string().optional(),
           body: z.string(),
           name: z.string(),
           role: z.string(),

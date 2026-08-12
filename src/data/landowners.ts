@@ -112,3 +112,62 @@ export const faq = [
     a: 'A member of the CarbonFree development team, based in Toronto — not a broker.',
   },
 ];
+
+/* ---------------------------------------------------------------------------
+   PLACEHOLDER CONTENT — none of this is real.
+
+   Everything from here down was written to size the layout, not to be
+   published. No CarbonFree landowner has said any of it and no such lease is
+   known to exist; the counties, acreages, terms and names are invented.
+
+   Both blocks render inside `.cf-draft`, which frames them and labels the
+   frame, so the state is visible on the page rather than only in this comment.
+   Replacing this with real material is the whole job: get signed permission
+   from the landowner for the quote and their name, confirm the figures against
+   the executed lease, then delete the `placeholder` flag — the frame and the
+   markers come off with it.
+--------------------------------------------------------------------------- */
+
+export const caseStudy = {
+  placeholder: true,
+  draftLabel: 'Placeholder — illustrative, not a real lease',
+  location: 'Dufferin County, Ontario',
+  image: '/images/dufferin-county.jpg',
+  /* Describes the photograph. It is countryside of the right kind, not the
+     parcel in the story — there is no such parcel. Do not write alt text that
+     implies otherwise until a real, cleared site photo replaces it. */
+  imageAlt: 'Aerial view of rolling Ontario farmland, with cropped fields either side of a rural highway',
+  lede: 'A 240-acre farm with a low-yield back parcel that had been rented out for grazing at a rate that barely covered its own property tax.',
+  stats: [
+    { value: '58', unit: 'acres', label: 'leased, from a 240-acre holding' },
+    { value: '30', unit: 'yr', label: 'lease term, with renewal options' },
+    { value: '7', unit: 'mo', label: 'from first call to signed option' },
+  ],
+  body: [
+    'The parcel sat at the back of the property: wet in spring, thin soil, awkward to reach with equipment. It had been in and out of grazing for a decade. What made it work for solar had nothing to do with any of that — a distribution feeder ran along the road allowance with capacity available on it.',
+    'CarbonFree walked the site, confirmed the interconnection, and put an option agreement in front of the owner within two months. The family took it to their own lawyer and their accountant before signing anything. The remaining 180 acres stayed in production throughout, and the access road built for the project is now the all-weather route to the back of the farm.',
+  ],
+  quote: 'The part of the farm that gave us the most trouble is now the part we can count on. It pays the same in a drought year as it does in a good one.',
+  attribution: 'Landowner, Dufferin County',
+} as const;
+
+export const testimonials = [
+  {
+    placeholder: true,
+    quote: 'They told us on the second visit that half our acreage was never going to work, which is not what I expected to hear from someone trying to sign a lease.',
+    name: 'Landowner',
+    detail: 'Grey County · 40 acres under lease',
+  },
+  {
+    placeholder: true,
+    quote: 'Twenty years of farming and this is the first income I have had that does not depend on rain, or diesel, or what the elevator is paying that week.',
+    name: 'Landowner',
+    detail: 'Wellington County · 95 acres under lease',
+  },
+  {
+    placeholder: true,
+    quote: 'Our lawyer went through the agreement twice and came back with three changes. CarbonFree took all three without an argument.',
+    name: 'Landowner',
+    detail: 'Renfrew County · 60 acres under option',
+  },
+] as const;

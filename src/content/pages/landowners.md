@@ -53,7 +53,7 @@ blocks:
 
   - type: split
     id: fit
-    image: https://carbonfree.com/wp-content/uploads/2014/11/KS.jpg
+    image: /images/encon-road.jpg
     imageAlt: Utility-scale solar project
     badgeValue: "4,250"
     badgeLabel: acres already under<br>option in Ontario
@@ -69,7 +69,6 @@ blocks:
       - Available interconnection capacity nearby, which is usually the deciding factor
       - Industrial and brownfield sites considered case by case
       - Typically larger parcels suited to utility-scale development
-    footnote: Not sure whether yours fits? That is exactly what the assessment is for.
 
   - type: steps
     id: how
@@ -77,18 +76,42 @@ blocks:
     title: From first enquiry to first payment, in four steps.
     source: land.steps
 
-  - type: list
+  - type: caseStudy
+    id: case-study
+    source: land.caseStudy
     spacing: pb-28
-    eyebrow: What to expect
-    title: Straight answers, before you ask.
-    source: land.expectations
+    eyebrow: "Case study: A lease in practice"
+    title: What it looks like on one Ontario farm.
+    body: >-
+      The specifics differ on every parcel, but the shape of the arrangement
+      &mdash; and the pace of it &mdash; does not.
 
-  - type: faq
-    id: faq
+  - type: testimonials
+    id: testimonials
+    source: land.testimonials
     spacing: pb-28
-    eyebrow: FAQ
-    title: Questions landowners ask.
-    source: land.faq
+    eyebrow: In their words
+    title: What Ontario landowners say about working with us.
+
+  - type: leadership
+    id: team
+    variant: profile
+    spacing: pb-28
+    eyebrow: Your tenants, every step of the way
+    title: The people who walk your field are the ones who build it.
+    body: >-
+      A solar lease runs for decades, so the question that matters is who is on
+      the other side of it. CarbonFree was founded in Toronto in 2006 and much
+      of the senior team joined within the first two years. Development,
+      financing, construction and operation all sit under one roof &mdash; the
+      person who first visits your property is not handing you to a stranger at
+      the next stage.
+    only:
+      - Doug Deeks
+      - Daniel Soper
+      - David Oxtoby
+      - Graham Erion
+    link: { label: Meet the full leadership team, href: /leadership }
 
   - type: contact
     id: assessment
@@ -104,7 +127,7 @@ blocks:
       - { label: Phone, type: tel, half: true }
       - { label: Email, type: email, half: true }
       - { label: Approximate acreage, half: true }
-      - { label: Where is the land?, half: true }
+      - { label: "Where is the land?", half: true }
       - { label: Current use, type: select, half: true, options: [Idle / unused, Pasture or grazing, Row crops, Industrial or brownfield, Other] }
-      - { label: Anything else we should know?, type: textarea }
+      - { label: "Anything else we should know?", type: textarea }
 ---
